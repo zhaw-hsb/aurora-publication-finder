@@ -1,0 +1,261 @@
+{
+    "types":{
+      "journal-article": "journal article",
+      "book-chapter": "book part",
+      "book": "book", 
+      "dissertation":"doctoral thesis",
+      "dataset":"dataset",
+      "report": "report",
+      "other":"other",
+      "reference-entry":"book part",
+      "peer-review": "peer review",
+      "standard":"patent",
+      "grant": "other",
+      "proceedings-article":"conference paper",
+      "proceedings":"conference proceedings",
+      "reference-book":"book",
+      "posted-content":"preprint",
+      "edited-book":"book",
+      "monograph": "book",
+      "component":"other",
+      "journal-issue":"other",
+      "journal":"journal",
+      "journal-volume":"other",
+      "report-series":"other", 
+      "book-part":"book part",
+      "book-series":"other",
+      "book-set":"other",
+      "proceedings-series":"other",
+      "Default": "other"
+    },
+    "licenses":{
+        "https://creativecommons.org/licenses/by/4.0/":"https://creativecommons.org/licenses/by/4.0/",
+        "https://creativecommons.org/licenses/by-sa/4.0/":"https://creativecommons.org/licenses/by-sa/4.0/",
+        "https://creativecommons.org/licenses/by-nc/4.0/":"https://creativecommons.org/licenses/by-nc/4.0/",
+        "https://creativecommons.org/licenses/by-nd/4.0/":"https://creativecommons.org/licenses/by-nd/4.0/",
+        "https://creativecommons.org/licenses/by-nc-sa/4.0/":"https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "https://creativecommons.org/licenses/by-nc-nd/4.0/":"https://creativecommons.org/licenses/by-nc-nd/4.0/",
+        "https://creativecommons.org/licenses/by/3.0/":"https://creativecommons.org/licenses/by/3.0/",
+        "https://creativecommons.org/licenses/by-sa/3.0/":"https://creativecommons.org/licenses/by-sa/3.0/",
+        "https://creativecommons.org/licenses/by-nc/3.0/":"https://creativecommons.org/licenses/by-nc/3.0/",
+        "https://creativecommons.org/licenses/by-nd/3.0/":"https://creativecommons.org/licenses/by-nd/3.0/",
+        "https://creativecommons.org/licenses/by-nc-sa/3.0/":"https://creativecommons.org/licenses/by-nc-sa/3.0/",
+        "https://creativecommons.org/licenses/by-nc-nd/3.0/":"https://creativecommons.org/licenses/by-nc-nd/3.0/",
+        "https://creativecommons.org/licenses/by/2.0/":"https://creativecommons.org/licenses/by/2.0/",
+        "https://creativecommons.org/licenses/by-sa/2.0/":"https://creativecommons.org/licenses/by-sa/2.0/",
+        "https://creativecommons.org/licenses/by-nc/2.0/":"https://creativecommons.org/licenses/by-nc/2.0/",
+        "https://creativecommons.org/licenses/by-nd/2.0/":"https://creativecommons.org/licenses/by-nd/2.0/",
+        "https://creativecommons.org/licenses/by-nc-sa/2.0/":"https://creativecommons.org/licenses/by-nc-sa/2.0/",
+        "https://creativecommons.org/licenses/by-nc-nd/2.0/":"https://creativecommons.org/licenses/by-nc-nd/2.0/",
+        "https://creativecommons.org/licenses/by/1.0/":"https://creativecommons.org/licenses/by/1.0/",
+        "https://creativecommons.org/licenses/by-sa/1.0/":"https://creativecommons.org/licenses/by-sa/1.0/",
+        "https://creativecommons.org/licenses/by-nc/1.0/":"https://creativecommons.org/licenses/by-nc/1.0/",
+        "https://creativecommons.org/licenses/by-nd/1.0/":"https://creativecommons.org/licenses/by-nd/1.0/",
+        "https://creativecommons.org/licenses/by-nc-sa/1.0/":"https://creativecommons.org/licenses/by-nc-sa/1.0/",
+        "https://creativecommons.org/licenses/by-nc-nd/1.0/":"https://creativecommons.org/licenses/by-nc-nd/1.0/",
+        "http://creativecommons.org/licenses/by/4.0/":"https://creativecommons.org/licenses/by/4.0/",
+        "http://creativecommons.org/licenses/by-sa/4.0/":"https://creativecommons.org/licenses/by-sa/4.0/",
+        "http://creativecommons.org/licenses/by-nc/4.0/":"https://creativecommons.org/licenses/by-nc/4.0/",
+        "http://creativecommons.org/licenses/by-nd/4.0/":"https://creativecommons.org/licenses/by-nd/4.0/",
+        "http://creativecommons.org/licenses/by-nc-sa/4.0/":"https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "http://creativecommons.org/licenses/by-nc-nd/4.0/":"https://creativecommons.org/licenses/by-nc-nd/4.0/",
+        "http://creativecommons.org/licenses/by/3.0/":"https://creativecommons.org/licenses/by/3.0/",
+        "http://creativecommons.org/licenses/by-sa/3.0/":"https://creativecommons.org/licenses/by-sa/3.0/",
+        "http://creativecommons.org/licenses/by-nc/3.0/":"https://creativecommons.org/licenses/by-nc/3.0/",
+        "http://creativecommons.org/licenses/by-nd/3.0/":"https://creativecommons.org/licenses/by-nd/3.0/",
+        "http://creativecommons.org/licenses/by-nc-sa/3.0/":"https://creativecommons.org/licenses/by-nc-sa/3.0/",
+        "http://creativecommons.org/licenses/by-nc-nd/3.0/":"https://creativecommons.org/licenses/by-nc-nd/3.0/",
+        "http://creativecommons.org/licenses/by/2.0/":"https://creativecommons.org/licenses/by/2.0/",
+        "http://creativecommons.org/licenses/by-sa/2.0/":"https://creativecommons.org/licenses/by-sa/2.0/",
+        "http://creativecommons.org/licenses/by-nc/2.0/":"https://creativecommons.org/licenses/by-nc/2.0/",
+        "http://creativecommons.org/licenses/by-nd/2.0/":"https://creativecommons.org/licenses/by-nd/2.0/",
+        "http://creativecommons.org/licenses/by-nc-sa/2.0/":"https://creativecommons.org/licenses/by-nc-sa/2.0/",
+        "http://creativecommons.org/licenses/by-nc-nd/2.0/":"https://creativecommons.org/licenses/by-nc-nd/2.0/",
+        "http://creativecommons.org/licenses/by/1.0/":"https://creativecommons.org/licenses/by/1.0/",
+        "http://creativecommons.org/licenses/by-sa/1.0/":"https://creativecommons.org/licenses/by-sa/1.0/",
+        "http://creativecommons.org/licenses/by-nc/1.0/":"https://creativecommons.org/licenses/by-nc/1.0/",
+        "http://creativecommons.org/licenses/by-nd/1.0/":"https://creativecommons.org/licenses/by-nd/1.0/",
+        "http://creativecommons.org/licenses/by-nc-sa/1.0/":"https://creativecommons.org/licenses/by-nc-sa/1.0/",
+        "http://creativecommons.org/licenses/by-nc-nd/1.0/":"https://creativecommons.org/licenses/by-nc-nd/1.0/",
+        "Default":""
+    },
+    "map":{
+        
+        "record": [
+            {
+                "field_name": "id",
+                "fields": [
+                    "DOI"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "authors",
+                "fields": [
+                    "author:given",
+                    "author:family"
+                ],
+                "multiple_fields": true,
+                "multiple_values": true
+            },
+            {
+                "field_name": "editors",
+                "fields": [
+                    "editor:given",
+                    "editor:family"
+                ],
+                "multiple_fields": true,
+                "multiple_values": true
+            },
+            {
+                "field_name": "dateIssued",
+                "fields": [
+                    "issued:date-parts"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            
+            {
+                "field_name": "DOI",
+                "fields": [
+                    "DOI"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "ISBN",
+                "fields": [
+                    "ISBN"
+                ],
+                "multiple_fields": false,
+                "multiple_values": true
+            },
+            {
+                "field_name": "ISSN",
+                "fields": [
+                    "ISSN"
+                ],
+                "multiple_fields": false,
+                "multiple_values": true
+            },
+            {
+                "field_name": "language",
+                "fields": [
+                    "language"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "publisher",
+                "fields": [
+                    "publisher"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "relationIspartof",
+                "fields": [
+                    "container-title"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "licenses",
+                "fields": [
+                    "license:URL"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "title",
+                "fields": [
+                    "title",
+                    "subtitle"
+                ],
+                "multiple_fields": true,
+                "multiple_values": false
+            },
+            {
+                "field_name": "type",
+                "fields": [
+                    "type"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "volume",
+                "fields": [
+                    "volume"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "issue",
+                "fields": [
+                    "issue"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "pagesStart",
+                "fields": [
+                    "page"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "pagesEnd",
+                "fields": [
+                    "page"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "publisherPlace",
+                "fields": [
+                    "publisher-location"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "event",
+                "fields": [
+                    "event:name"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "abstractText",
+                "fields": [
+                    "abstract"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "affiliations",
+                "fields": [
+                    "author:affiliation:name"
+                ],
+                "multiple_fields": false,
+                "multiple_values": true
+            }
+
+        ]
+    }  
+    
+}

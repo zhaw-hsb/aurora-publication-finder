@@ -1,0 +1,313 @@
+{ 
+    "types": {
+        "journal article": "Beitrag in wissenschaftlicher Zeitschrift",
+        "book part": "Buchbeitrag",
+        "book": "Buch",
+        "doctoral thesis": "Dissertation",
+        "report": "Working Paper \u2013 Gutachten \u2013 Studie",
+        "text":"Konferenz: Paper",
+        "other":"Weiteres (textuelles Material)",
+        "editorial": "Beitrag in wissenschaftlicher Zeitschrift",
+        "letter to the editor":"Beitrag in wissenschaftlicher Zeitschrift",
+        "conference paper": "Konferenz: Paper",
+        "conference proceedings": "Konferenz: Proceedings",
+        "preprint":"Working Paper \u2013 Gutachten \u2013 Studie",
+        "Default": "Weiteres (textuelles Material)"
+    },
+    "licenses": {
+        "https://creativecommons.org/licenses/by/4.0/":"https://creativecommons.org/licenses/by/4.0/",
+        "https://creativecommons.org/licenses/by-sa/4.0/":"https://creativecommons.org/licenses/by-sa/4.0/",
+        "https://creativecommons.org/licenses/by-nc/4.0/":"https://creativecommons.org/licenses/by-nc/4.0/",
+        "https://creativecommons.org/licenses/by-nd/4.0/":"https://creativecommons.org/licenses/by-nd/4.0/",
+        "https://creativecommons.org/licenses/by-nc-sa/4.0/":"https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "https://creativecommons.org/licenses/by-nc-nd/4.0/":"https://creativecommons.org/licenses/by-nc-nd/4.0/",
+        "https://creativecommons.org/licenses/by/3.0/":"https://creativecommons.org/licenses/by/3.0/",
+        "https://creativecommons.org/licenses/by-sa/3.0/":"https://creativecommons.org/licenses/by-sa/3.0/",
+        "https://creativecommons.org/licenses/by-nc/3.0/":"https://creativecommons.org/licenses/by-nc/3.0/",
+        "https://creativecommons.org/licenses/by-nd/3.0/":"https://creativecommons.org/licenses/by-nd/3.0/",
+        "https://creativecommons.org/licenses/by-nc-sa/3.0/":"https://creativecommons.org/licenses/by-nc-sa/3.0/",
+        "https://creativecommons.org/licenses/by-nc-nd/3.0/":"https://creativecommons.org/licenses/by-nc-nd/3.0/",
+        "https://creativecommons.org/licenses/by/2.0/":"https://creativecommons.org/licenses/by/2.0/",
+        "https://creativecommons.org/licenses/by-sa/2.0/":"https://creativecommons.org/licenses/by-sa/2.0/",
+        "https://creativecommons.org/licenses/by-nc/2.0/":"https://creativecommons.org/licenses/by-nc/2.0/",
+        "https://creativecommons.org/licenses/by-nd/2.0/":"https://creativecommons.org/licenses/by-nd/2.0/",
+        "https://creativecommons.org/licenses/by-nc-sa/2.0/":"https://creativecommons.org/licenses/by-nc-sa/2.0/",
+        "https://creativecommons.org/licenses/by-nc-nd/2.0/":"https://creativecommons.org/licenses/by-nc-nd/2.0/",
+        "https://creativecommons.org/licenses/by/1.0/":"https://creativecommons.org/licenses/by/1.0/",
+        "https://creativecommons.org/licenses/by-sa/1.0/":"https://creativecommons.org/licenses/by-sa/1.0/",
+        "https://creativecommons.org/licenses/by-nc/1.0/":"https://creativecommons.org/licenses/by-nc/1.0/",
+        "https://creativecommons.org/licenses/by-nd/1.0/":"https://creativecommons.org/licenses/by-nd/1.0/",
+        "https://creativecommons.org/licenses/by-nc-sa/1.0/":"https://creativecommons.org/licenses/by-nc-sa/1.0/",
+        "https://creativecommons.org/licenses/by-nc-nd/1.0/":"https://creativecommons.org/licenses/by-nc-nd/1.0/",
+        "Default": "Licence according to publishing contract"
+    },
+    "publication_statuses": {
+        "publishedVersion": "publishedVersion",
+        "acceptedVersion": "acceptedVersion",
+        "submittedVersion": "submittedVersion",
+        "Default": "publishedVersion"
+    },
+    "oa_categories": {
+        "gold": "Gold",
+        "green": "Green",
+        "hybrid": "Hybrid",
+        "closed": "Closed",
+        "bronze": "Bronze",
+        "Default": "Not specified"
+    },
+    "language":{
+        "de" : "de",
+        "en" : "en",
+        "fr" : "fr",
+        "it" : "it",
+        "es" : "es",
+        "pt" : "pt",
+        "fi" : "fi",
+        "ru" : "ru",
+        "pl" : "pl",
+        "zh" : "zh",
+        "ko" : "ko",
+        "ar" : "ar",
+        "Default" : "other"
+    },
+    "map": {
+        "record": [
+            {
+                "field_name": "id",
+                "fields": [
+                    "id"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "openalex",
+                "section": null
+            },
+            {
+                "field_name": "dc.contributor.author",
+                "fields": [
+                    "authors"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic",
+                "place": true
+            },
+            {
+                "field_name": "dc.contributor.editor",
+                "fields": [
+                    "editors"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic",
+                "place": true
+            },
+            {
+                "field_name": "dc.date.issued",
+                "fields": [
+                    "dateIssued"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "dc.identifier.doi",
+                "fields": [
+                    "DOI"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "dc.identifier.isbn",
+                "fields": [
+                    "ISBN"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "dc.identifier.issn",
+                "fields": [
+                    "ISSN"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "openalex",                
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "dc.language.iso",
+                "fields": [
+                    "language"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "openalex",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "dc.publisher",
+                "fields": [
+                    "publisher"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "dc.relation.ispartof",
+                "fields": [
+                    "relationIspartof"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic",
+                "default": ""
+            },
+            {
+                "field_name": "dc.relation.ispartofseries",
+                "fields": [
+                    "relationIspartofseries"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "dc.rights",
+                "fields": [
+                    "licenses"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "openalex",
+                "section": "zhawlegal"
+            },
+            {
+                "field_name": "dc.title",
+                "fields": [
+                    "title"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "dc.type",
+                "fields": [
+                    "type"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawpublicationtype"
+            },
+            {
+                "field_name": "zhaw.publication.status",
+                "fields": [
+                    "publicationStatus"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "openalex",
+                "section": "zhawlegal"
+            },
+            {
+                "field_name": "zhaw.volume",
+                "fields": [
+                    "volume"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "zhaw.issue",
+                "fields": [
+                    "issue"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "zhaw.pages.start",
+                "fields": [
+                    "pagesStart"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "zhaw.pages.end",
+                "fields": [
+                    "pagesEnd"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "zhaw.publisher.place",
+                "fields": [
+                    "publisherPlace"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "dc.identifier.pmid",
+                "fields": [
+                    "PMID"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "openalex",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "zhaw.conference.details",
+                "fields": [
+                    "event"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "zhawdescriptionclassic"
+            },
+            {
+                "field_name": "dc.description.abstract",
+                "fields": [
+                    "abstractText"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "openalex",
+                "section": "zhawdescribtioncontent"
+            },
+            {
+                "field_name": "dcterms.type",
+                "section": "zhawpublicationtype",
+                "default": "Text"
+            },
+            {
+                "field_name": "zhaw.originated.zhaw",
+                "section": "zhaworganizational",
+                "default": "Yes"
+            },
+            {
+                "field_name": "granted",
+                "section": "license",
+                "default": true            
+            },
+            {
+                "field_name": "zhaw.funding.eu",
+                "section": "zhawfunding",
+                "default": "Not specified"
+            },
+            {
+                "field_name": "zhaw.publication.review",
+                "section": "zhawdescriptionclassic",
+                "default": "Not specified"
+            }
+            
+        ]
+    }
+}

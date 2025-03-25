@@ -1,0 +1,4 @@
+target/
+bin
+src/main/resources/assets/config/credentials.*
+src/main/resources/assets/config/application.properties.*

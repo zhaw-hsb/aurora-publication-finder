@@ -1,0 +1,55 @@
+####################organisation
+organisation.rors = https://ror.org/05pmsvm27
+organisation.repositoryAPIUrl = https://digitalcollection-dev.zhaw.ch/server/api
+organisation.specialCharacters = :
+organisation.collectionId = 4c490ddf-fb30-4e26-8e9a-8744cb6dcfab
+organisation.affiliations.exceptions = Zurich University of Applied Sciences in Business Administration
+
+
+#####################openalex
+openalex.id = id
+
+openalex.affiliations =  ZHAW|\
+                            Zurich University of Applied Sciences|\
+                            Zürcher Hochschule für Angewandte Wissenschaften|\
+                            ZHAW Zurich University of Applied Sciences|\
+                            ZHAW Zürcher Hochschule für Angewandte Wissenschaften
+openalex.url.affiliations = https://api.openalex.org/works?filter=raw_affiliation_strings.search:
+openalex.url.ror = https://api.openalex.org/works?filter=institutions.ror:
+openalex.maxItemField = per_page
+openalex.maxItem = 200
+openalex.nextCursorField = next_cursor
+openalex.startCursor = *
+openalex.fromDateField = from_publication_date
+openalex.connectionElement = ,
+
+openalex.metadata = meta
+openalex.itemsSection = results
+
+
+###########crossref
+crossref.id = DOI
+
+crossref.affiliations = ZHAW
+crossref.url.affiliations = https://api.crossref.org/works?query.affiliation=
+crossref.url.ror = 
+crossref.maxItemField = rows
+crossref.maxItem = 1000
+crossref.nextCursorField = next-cursor
+crossref.startCursor = *
+crossref.fromDateField = from-deposit-date
+crossref.connectionElement = &filter=
+
+crossref.metadata = message
+crossref.itemsSection = message:items
+
+
+###########matcher
+match.string = dc.identifier.doi
+
+
+### Path for output files (outside JAR)
+externalfile.path = /var/lib/tomcat9/webapps/hsb-dspace-7/aurora
+
+### DSpace Version to set how the csrf token is received
+dspace.version = 7.6.0

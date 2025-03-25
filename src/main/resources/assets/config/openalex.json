@@ -1,0 +1,223 @@
+{
+    "types":{
+      "article": "journal article",
+      "book-chapter": "book part", 
+      "book": "book", 
+      "dissertation": "doctoral thesis", 
+      "dataset": "dataset",
+      "report": "report", 
+      "paratext": "text",
+      "other": "other",
+      "reference-entry": "book part",
+      "peer-review": "peer review",
+      "standard": "patent",
+      "editorial": "editorial", 
+      "erratum": "corrigendum", 
+      "grant": "other",
+      "letter": "letter to the editor",
+      "Default": "other"
+    },
+    "licenses":{
+        "cc-by": "https://creativecommons.org/licenses/by/4.0/",
+        "cc-by-sa": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "cc-by-nc": "https://creativecommons.org/licenses/by-nc/4.0/",
+        "cc-by-nd": "https://creativecommons.org/licenses/by-nd/4.0/",
+        "cc-by-nc-sa": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "cc-by-nc-nd": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+        "Default":""
+
+    },
+    "publication_statuses":{
+        "publishedVersion":"publishedVersion",
+        "updatedVersion":"updatedVersion",
+        "acceptedVersion":"acceptedVersion",
+        "submittedVersion":"submittedVersion",
+        "draft":"draft",
+        "Default":""
+    },
+    "oa_categories":{
+        "gold": "gold",
+        "green":"green",
+        "hybrid": "hybrid",
+        "closed": "closed",
+        "bronze": "bronze",
+        "Default": ""
+    },
+    "map":{
+        
+        "record": [
+            {
+                "field_name": "id",
+                "fields": [
+                    "id"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "authors",
+                "fields": [
+                    "authorships:author:display_name"
+                ],
+                "multiple_fields": false,
+                "multiple_values": true
+            },
+            {
+                "field_name": "dateIssued",
+                "fields": [
+                    "publication_year"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "DOI",
+                "fields": [
+                    "doi"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "ISSN",
+                "fields": [
+                    "primary_location:source:issn"
+                ],
+                "multiple_fields": false,
+                "multiple_values": true
+            },
+            {
+                "field_name": "language",
+                "fields": [
+                    "language"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "publisher",
+                "fields": [
+                    "primary_location:source:display_name",
+                    "primary_location:source:host_organization_name"
+                ],
+                "multiple_fields": true,
+                "multiple_values": true
+            },
+            {
+                "field_name": "publisherType",
+                "fields": [
+                    "primary_location:source:type"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "relationIspartof",
+                "fields": [
+                    "primary_location:source:display_name"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "licenses",
+                "fields": [
+                    "primary_location:license"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "title",
+                "fields": [
+                    "title"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "type",
+                "fields": [
+                    "type"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "publicationStatus",
+                "fields": [
+                    "primary_location:version"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "volume",
+                "fields": [
+                    "biblio:volume"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "issue",
+                "fields": [
+                    "biblio:issue"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "pagesStart",
+                "fields": [
+                    "biblio:first_page"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "pagesEnd",
+                "fields": [
+                    "biblio:last_page"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "PMID",
+                "fields": [
+                    "ids:pmid"
+                ],
+                "multiple_fields": false,
+                "multiple_values": true
+            },
+            {
+                "field_name": "abstractText",
+                "fields": [
+                    "abstract_inverted_index"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            },
+            {
+                "field_name": "affiliations",
+                "fields": [
+                    "authorships:institutions:display_name"
+                ],
+                "multiple_fields": false,
+                "multiple_values": true
+            },
+            {
+                "field_name": "OA",
+                "fields": [
+                    "open_access:oa_status"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
+            }
+
+
+        ]
+    }  
+    
+}

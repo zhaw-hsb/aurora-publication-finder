@@ -1,0 +1,285 @@
+{
+    "types": {
+        "journal article": "01A - Beitrag in wissenschaftlicher Zeitschrift",
+        "book part": "04A - Beitrag Sammelband",
+        "book": "02 - Monographie",
+        "doctoral thesis": "11 - Studentische Arbeit",
+        "report": "05 - Forschungs- oder Arbeitsbericht",
+        "text": "04B - Beitrag Konferenzschrift",
+        "other": "99 - Sonstiges",
+        "editorial": "01A - Beitrag in wissenschaftlicher Zeitschrift",
+        "conference paper": "04B - Beitrag Konferenzschrift",
+        "conference proceedings": "03 - Sammelband",
+        "preprint": "99 - Sonstiges",
+        "Default": "99 - Sonstiges"
+    },
+    "licenses": {
+        "https://creativecommons.org/licenses/by/4.0/": "https://creativecommons.org/licenses/by/4.0/",
+        "https://creativecommons.org/licenses/by-sa/4.0/": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "https://creativecommons.org/licenses/by-nc/4.0/": "https://creativecommons.org/licenses/by-nc/4.0/",
+        "https://creativecommons.org/licenses/by-nd/4.0/": "https://creativecommons.org/licenses/by-nd/4.0/",
+        "https://creativecommons.org/licenses/by-nc-sa/4.0/": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "https://creativecommons.org/licenses/by-nc-nd/4.0/": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+        "Default": ""
+    },
+    "publication_statuses": {
+        "publishedVersion": "Published",
+        "updatedVersion": "Published",
+        "acceptedVersion": "Pre-print in printing",
+        "submittedVersion": "Pre-Print",
+        "draft": "Unpublished",
+        "Default": "Published"
+    },
+    "oa_categories": {
+        "gold": "Gold",
+        "green": "Green",
+        "hybrid": "Hybrid",
+        "closed": "Closed",
+        "bronze": "Bronze",
+        "Default": null
+    },
+    "language": {
+        "de": "de",
+        "en": "en",
+        "fr": "fr",
+        "it": "it",
+        "Default": "other"
+    },
+    "map": {
+        "record": [
+            {
+                "field_name": "id",
+                "fields": [
+                    "id"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "openalex",
+                "section": null
+            },
+            {
+                "field_name": "dc.contributor.author",
+                "fields": [
+                    "authors"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.contributor.editor",
+                "fields": [
+                    "editors"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.date.issued",
+                "fields": [
+                    "dateIssued"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.identifier.doi",
+                "fields": [
+                    "DOI"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.identifier.isbn",
+                "fields": [
+                    "ISBN"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.identifier.issn",
+                "fields": [
+                    "ISSN"
+                ],
+                "multiple_values": true,
+                "merge_criteria": "openalex",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.language.iso",
+                "fields": [
+                    "language"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "openalex",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.publisher",
+                "fields": [
+                    "publisher"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.relation.ispartof",
+                "fields": [
+                    "relationIspartof"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.relation.ispartofseries",
+                "fields": [
+                    "relationIspartofseries"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.rights.uri",
+                "fields": [
+                    "licenses"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "openalex",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.title",
+                "fields": [
+                    "title"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.type",
+                "fields": [
+                    "type"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "fhnwTypeStep"
+            },
+            {
+                "field_name": "fhnw.publicationState",
+                "fields": [
+                    "publicationStatus"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "openalex",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.volume",
+                "fields": [
+                    "volume"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.issue",
+                "fields": [
+                    "issue"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "fhnw.pagination",
+                "fields": [
+                    "pagesStart",
+                    "pagesEnd"
+                ],
+                "concatenator": "-",
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.spatial",
+                "fields": [
+                    "publisherPlace"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep",
+                "default": "undefined"
+            },
+            {
+                "field_name": "dc.event",
+                "fields": [
+                    "event"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "crossref",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "dc.description.abstract",
+                "fields": [
+                    "abstractText"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "openalex",
+                "section": "PublicationStep"
+            },
+            {
+                "field_name": "fhnw.openAccessCategory",
+                "fields": [
+                    "OA"
+                ],
+                "multiple_values": false,
+                "merge_criteria": "openalex",
+                "section": "PublicationStep",
+                "visibleOnlyInWorkflow": true
+            },
+            {
+                "field_name": "granted",
+                "section": "license",
+                "default": true
+            },
+            {
+                "field_name": "accessConditions",
+                "section": "itemAccessConditions",
+                "default": "öffentlich"
+            },
+            {
+                "field_name": "fhnw.InventedHere",
+                "section": "PublicationStep",
+                "default": "Yes"
+            },
+            {
+                "field_name": "dc.subject.ddc",
+                "section": "PublicationStep",
+                "default": "000 - Allgemeines, Wissenschaft",
+                "visibleOnlyInWorkflow": true
+            },
+            {
+                "field_name": "fhnw.ReviewType",
+                "section": "PublicationStep",
+                "default": "Not specified"
+            },
+            {
+                "field_name": "fhnw.StudentsWorkType",
+                "section": "PublicationStep",
+                "default": "Dissertation"
+            }
+        ]
+    }
+}

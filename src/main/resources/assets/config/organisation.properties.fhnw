@@ -1,0 +1,100 @@
+####################organisation
+organisation.rors = https://ror.org/04mq2g308
+organisation.repositoryAPIUrl = https://irf.test.fhnw.ch/server/api
+organisation.specialCharacters = .|:|;|?|!
+organisation.collectionId = 7de9e71c-3671-4c6c-8b26-13a3cba4f56d
+#organisation.affiliations.exceptions =
+
+#####################openalex
+openalex.id = id
+
+openalex.affiliations = Fachhochschule Nordwestschweiz|\
+                            FHNW|\
+                            Fachhochschule Nordwestschweiz FHNW|\
+                            FHNW Fachhochschule Nordwestschweiz|\
+                            University of Applied Sciences and Arts Northwestern Switzerland|\
+                            FHNW University of Applied Sciences and Arts Northwestern Switzerland|\
+                            University of Applied Sciences and Arts Northwestern Switzerland FHNW|\
+                            UAS Northwestern Switzerland|\
+                            University of Applied Sciences Northwestern Switzerland|\
+                            FHNW University of Applied Sciences Northwestern Switzerland|\
+                            University of Applied Sciences Northwestern Switzerland FHNW|\
+                            FH Nordwestschweiz|\
+                            FH NW|\
+                            Hochschule für Angewandte Psychologie FHNW|\
+                            FHNW School of Applied Psychology|\
+                            APS FHNW|\
+                            FHNW APS|\
+                            Hochschule für Architektur, Bau und Geomatik FHNW|\
+                            FHNW School of Architecture, Construction and Geomatics|\
+                            HABG FHNW|\
+                            FHNW HABG|\
+                            Hochschule für Gestaltung und Kunst Basel FHNW|\
+                            Basel Academy of Art and Design FHNW|\
+                            HGK Basel FHNW|\
+                            HGK FHNW|\
+                            FHNW HGK|\
+                            Hochschule für Life Sciences FHNW|\
+                            FHNW School of Life Sciences|\
+                            HLS FHNW|\
+                            FHNW HLS|\
+                            Hochschule für Musik Basel FHNW|\
+                            Basel Academy of Music FHNW|\
+                            HSM Basel FHNW|\
+                            HSM FHNW|\
+                            FHNW HSM|\
+                            Pädagogische Hochschule FHNW|\
+                            FHNW School of Education|\
+                            PH FHNW|\
+                            FHNW PH|\
+                            Hochschule für Soziale Arbeit FHNW|\
+                            FHNW School of Social Work|\
+                            HSA FHNW|\
+                            FHNW HSA|\
+                            Hochschule für Technik FHNW|\
+                            FHNW School of Engineering|\
+                            HT FHNW|\
+                            FHNW HT|\
+                            Hochschule für Wirtschaft FHNW|\
+                            FHNW School of Business|\
+                            HSW FHNW|\
+                            FHNW HSW|\
+openalex.url.affiliations = https://api.openalex.org/works?filter=raw_affiliation_strings.search:
+openalex.url.ror = https://api.openalex.org/works?filter=institutions.ror:
+openalex.maxItemField = per_page
+openalex.maxItem = 200
+openalex.nextCursorField = next_cursor
+openalex.startCursor = *
+openalex.fromDateField = from_publication_date
+openalex.connectionElement = ,
+
+openalex.metadata = meta
+openalex.itemsSection = results
+
+
+###########crossref
+crossref.id = DOI
+
+crossref.affiliations = FHNW
+crossref.url.affiliations = https://api.crossref.org/works?query.affiliation=
+crossref.url.ror = 
+crossref.maxItemField = rows
+crossref.maxItem = 1000
+crossref.nextCursorField = next-cursor
+crossref.startCursor = *
+crossref.fromDateField = from-deposit-date
+crossref.connectionElement = &filter=
+
+crossref.metadata = message
+crossref.itemsSection = message:items
+
+
+###########matcher
+match.string = dc.identifier.doi
+
+
+### Path for output files (outside JAR)
+externalfile.path = /var/lib/tomcat9/webapps/hsb-dspace-7/aurora
+
+### DSpace Version to set how the csrf token is received
+dspace.version = 8.0.0

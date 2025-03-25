@@ -1,0 +1,256 @@
+/*
+* This file is part of the Aurora Publication Finder.
+*
+* (c) ZHAW HSB <apps.hsb@zhaw.ch>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+package ch.zhaw.hsb.aurora.publicationfinder.Organisation;
+
+import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import ch.zhaw.hsb.aurora.publicationfinder.Modules.DSpace.Importer.BaseImporter;
+import ch.zhaw.hsb.aurora.publicationfinder.Modules.DSpace.Service.HTTPService;
+import ch.zhaw.hsb.aurora.publicationfinder.Organisation.Item.WorkflowItem;
+
+/**
+ * This class is the extended importer with organisation specific requirements.
+ * 
+ * @author Dana Ghousson ZHAW
+ * @author Iris Hausmann ZHAW
+ */
+public class OrganisationImporter extends BaseImporter {
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+
+    /**
+     * Constructor
+     * @param data organisation specific data
+     */
+    public OrganisationImporter(Map<String, Map<String, Object>> data) {
+
+        super(data);
+
+       
+    }
+
+    @Override
+    public void importData() {
+
+        if (this.data.size() < 1) {
+            System.out.println("No data to be imported.");
+            return;
+        }
+
+
+        for (Entry<String, Map<String, Object>> item : this.data.entrySet()) {
+
+            Map<String, Object> valueDict = item.getValue();
+
+            // create workspaceitem
+            int itemId = this.createWorkspaceItem();
+            if (itemId != -1) {
+
+                String formedValues = this.formValues(valueDict);
+
+                if (this.enableFieldsForSpecificType(valueDict, itemId)) {
+
+                    // add values
+                    if (this.addValuesToWorkspaceItem(itemId, formedValues)) {
+
+                        WorkflowItem workflowItem = this.addWorkspaceItemToWorkflow(itemId);
+
+                        if (workflowItem != null) {
+                            System.out.println("Successfully imported item");
+
+                            Map<String,String[]> workflowFieldPathsWithValues = this.formWorkflowValues(valueDict);
+                            if(workflowFieldPathsWithValues != null){
+                                if (this.addValuesToWorkflowItem(workflowItem, valueDict, workflowFieldPathsWithValues)) {
+
+                                    System.out.println("Successfully added values to workflow item");
+    
+                                }
+                            }
+                            
+                            continue;
+                        }
+
+                    }
+
+                }
+
+            }
+            System.out.println("Import failed.");
+
+        }
+
+    }
+
+    @Override
+    protected  Map<String,String[]> formWorkflowValues(Map<String, Object> valueDict){
+
+        Map<String,String[]> pathsWithValues = new HashMap<String,String[]>();
+
+        for(String workflowFieldName: this.workflowFieldNames)
+            {
+                String path = "/sections/fhnw" + ((String[]) valueDict.get("dc.type"))[0].split(" ")[0]
+                + this.sectionDict.get(workflowFieldName) + "/"+workflowFieldName;
+                if(valueDict.get(workflowFieldName) != null){
+                    pathsWithValues.put(path, (String[]) valueDict.get(workflowFieldName) );
+
+                }
+                else if(this.defaultDict.get(workflowFieldName) != null){
+                    pathsWithValues.put(path, new String[]{this.defaultDict.get(workflowFieldName)});
+
+                }else{
+                    //do not add to map
+                }
+
+            }   
+        
+        if(pathsWithValues.size()<=1){
+            //if there is only the field dc.subject.ddc it should not be added
+            return null;
+        }
+            
+        return pathsWithValues;
+
+
+
+    }
+
+    @Override
+    protected boolean enableFieldsForSpecificType(Map<String, Object> valueDict, int itemId) {
+
+        String value = ((String[]) valueDict.get("dc.type"))[0];
+        ArrayNode arrayNode = objectMapper.createArrayNode();
+
+        ObjectNode jsonNode = objectMapper.createObjectNode();
+        jsonNode.put("op", "add")
+                .put("path", "/sections/" + this.sectionDict.get("dc.type") + "/dc.type")
+                .set("value", objectMapper.createArrayNode().add(objectMapper.createObjectNode().put("value", value)));
+
+        arrayNode.add(jsonNode);
+
+        HttpResponse<String> response = HTTPService.sendRequestWithAuthentication(
+                arrayNode.toString(),
+                "application/json",
+                this.repositoryAPIUrl + "/submission/workspaceitems/" + itemId,
+                "PATCH");
+
+        if (response != null) {
+
+            String jsonData = response.body();
+            try {
+                JsonNode jobject = objectMapper.readTree(jsonData);
+
+                ArrayNode missingPaths = objectMapper.createArrayNode();
+            
+                missingPaths = (ArrayNode) jobject.get("errors").get(0).get("paths");
+
+            } catch (NullPointerException | JsonProcessingException e) {
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+
+        return false;
+
+    }
+
+    @Override
+    protected String formValues(Map<String, Object> valueDict) {
+
+        ArrayNode arrayNode = objectMapper.createArrayNode();
+
+        for (Entry<String, Object> itemValue : valueDict.entrySet()) {
+
+            String metadataField = itemValue.getKey();
+
+            // id soll nicht importiert werden
+            if (metadataField.equals("id")) {
+                continue;
+            }
+
+            String[] metadataValue = (String[]) itemValue.getValue();
+
+            if (this.sectionDict.get(metadataField) != null) {
+
+                ArrayNode bodyValues = objectMapper.createArrayNode();
+
+                //create whole body
+                if (metadataValue != null) {
+                    int countEntry = 0;
+                    for (String value : metadataValue) {
+                        ObjectNode jObject = objectMapper.createObjectNode();
+                        jObject.put("value", value);
+                        if (this.placeDict.containsKey(metadataField)) {
+                            jObject.put("place", countEntry++);
+                        }
+                        bodyValues.add(jObject);
+
+                    }
+                }
+
+                ObjectNode jsonNode = objectMapper.createObjectNode();
+                if (metadataField.matches("dc.type|"+String.join("|", this.workflowFieldNames))) {
+                    continue;
+
+                } else {
+                    if (bodyValues.size() > 0) {
+                        jsonNode.put("op", "add")
+                                .put("path",
+                                        "/sections/fhnw" + ((String[]) valueDict.get("dc.type"))[0].split(" ")[0]
+                                                + this.sectionDict.get(metadataField) + "/" + metadataField)
+                                .set("value", bodyValues);
+
+                    }
+
+                }
+
+                if (!jsonNode.isEmpty()) {
+                    arrayNode.add(jsonNode);
+
+                }
+
+            }
+
+        }
+
+        //required fields
+           
+        String defaultValue = this.defaultDict.get("granted");
+        String section = this.sectionDict.get("granted");
+
+        arrayNode.add(objectMapper.createObjectNode().put("op", "add")
+                .put("path", "/sections/" + section + "/granted")
+                .put("value", defaultValue));
+
+
+        String defaultValue2 = this.defaultDict.get("accessConditions");
+        String section2 = this.sectionDict.get("accessConditions");
+
+        arrayNode.add(objectMapper.createObjectNode().put("op", "add")
+                .put("path", "/sections/" + section2 + "/accessConditions")
+                .set("value", objectMapper.createArrayNode().add(objectMapper.createObjectNode().put("name", defaultValue2))));
+        
+        return arrayNode.toString();
+
+    }
+
+}
