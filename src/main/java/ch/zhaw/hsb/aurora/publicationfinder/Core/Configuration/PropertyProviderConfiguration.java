@@ -116,7 +116,7 @@ public class PropertyProviderConfiguration {
         Object value;
         try {
             value = getInstance().get("organisation.affiliations.exceptions");
-            if (value != null) {
+            if (value != null && !value.equals("")) {
                 String affiliationsExceptionString = value.toString();
                 String[] affiliationExceptions = affiliationsExceptionString.split("\\|", 0);
                 return affiliationExceptions;
