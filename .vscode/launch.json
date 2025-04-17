@@ -10,7 +10,6 @@
             "request": "launch",
             "mainClass": "ch.zhaw.hsb.aurora.publicationfinder.Main",
             "projectName": "publicationfinder",
-            "vmArgs": "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8"
         },
     ]
 }

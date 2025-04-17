@@ -11,6 +11,7 @@ package ch.zhaw.hsb.aurora.publicationfinder.Modules.DSpace.DuplicateCheck;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -210,7 +211,7 @@ public abstract class DuplicateCheck {
 
             // "contains" is needed because we only have a part of the title
             String titleUrl = this.repositoryAPIUrl + "/discover/search/objects?f.title="
-                    + URLEncoder.encode(shortestTitle) + ",contains" + config;
+                    + URLEncoder.encode(shortestTitle, StandardCharsets.UTF_8) + ",contains" + config;
 
             duplicateItem.put("titleURL", titleUrl);
 
@@ -267,7 +268,7 @@ public abstract class DuplicateCheck {
             duplicateItem.put("config", config);
 
             String doiUrl = this.repositoryAPIUrl + "/discover/search/objects?f.doi="
-                    + URLEncoder.encode(duplicateItem.get("doi").toString()) + ",equals"
+                    + URLEncoder.encode(duplicateItem.get("doi").toString(), StandardCharsets.UTF_8) + ",equals"
                     + config;
             duplicateItem.put("doiURL", doiUrl);
 

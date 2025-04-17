@@ -191,7 +191,7 @@ public class DataSourceRetriever {
             switch (type) {
                 case "ror":
                     url = new URL(dataSourceProvider.getUrlRor()
-                            + URLEncoder.encode(dataSourceProvider.getRor(index))
+                            + URLEncoder.encode(dataSourceProvider.getRor(index), "UTF-8")
                             + dataSourceProvider.getConnectionElement() + dataSourceProvider.getFromDateField() + ":"
                             + this.date
                             + "&" + dataSourceProvider.getMaxItemField() + "="
@@ -200,7 +200,7 @@ public class DataSourceRetriever {
                     break;
                 case "affiliation":
                     url = new URL(dataSourceProvider.getUrlAffiliations()
-                            + "\"" + URLEncoder.encode(dataSourceProvider.getAffiliation(index)) + "\""
+                            + "\"" + URLEncoder.encode(dataSourceProvider.getAffiliation(index), "UTF-8") + "\""
                             + dataSourceProvider.getConnectionElement() + dataSourceProvider.getFromDateField() + ":"
                             + this.date
                             + "&" + dataSourceProvider.getMaxItemField() + "="

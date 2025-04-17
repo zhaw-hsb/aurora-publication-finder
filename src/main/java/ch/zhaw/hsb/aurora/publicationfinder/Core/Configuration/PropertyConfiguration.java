@@ -10,6 +10,8 @@ package ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import ch.zhaw.hsb.aurora.publicationfinder.Main;
 
@@ -40,9 +42,10 @@ public class PropertyConfiguration {
         if (prop == null) {
 
             try (InputStream input = Main.class.getClassLoader().getResourceAsStream(
-                    "assets/config/application.properties")) {
+                    "assets/config/application.properties"); InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
+                        
                 Properties property = new Properties();
-                property.load(input);
+                property.load(reader);
                 prop = property;
 
             } catch (IOException e) {

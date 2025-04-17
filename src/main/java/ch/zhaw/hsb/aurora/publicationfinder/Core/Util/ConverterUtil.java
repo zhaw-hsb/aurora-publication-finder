@@ -16,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class ConverterUtil {
         
 
         try (Writer writer = new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream(file)))) {
+                new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
             Method[] methods = InternModel.class.getMethods();
             Boolean newLine = true;
             // CSV header line
@@ -152,7 +153,7 @@ public class ConverterUtil {
         
 
         try (Writer writer = new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream(PropertyProviderConfiguration.getExternalFilePath()+path)))) {
+                new OutputStreamWriter(new FileOutputStream(PropertyProviderConfiguration.getExternalFilePath()+path), StandardCharsets.UTF_8))) {
 
             Boolean newLine = true;
             Boolean firstLine = true;
