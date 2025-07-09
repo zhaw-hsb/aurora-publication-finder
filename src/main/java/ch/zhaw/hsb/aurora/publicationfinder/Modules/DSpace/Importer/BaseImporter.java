@@ -241,7 +241,8 @@ public abstract class BaseImporter {
         HttpResponse<String> response = HTTPService.sendRequestWithAuthentication(
                 "/api/submission/workspaceitems/" + itemId,
                 "text/uri-list",
-                this.repositoryAPIUrl + "/workflow/workflowitems",
+                this.repositoryAPIUrl + "/workflow/workflowitems" + (PropertyProviderConfiguration.getDSpaceVersionShort().equals("7")?"":"?embed=item,sections,collection"
+                ),
                 "POST");
 
         if (response != null) {
@@ -323,7 +324,7 @@ public abstract class BaseImporter {
 
             JsonNode objectNode = factory.objectNode().put("op", "add")
                     .put("path", workflowFieldPathWithValue.getKey())
-                    .put("value", new ArrayNode(factory)
+                    .set("value", new ArrayNode(factory)
                             .add(factory.objectNode().put("value", ((String[]) workflowFieldPathWithValue.getValue())[0])));
 
             arrayNode.add(objectNode);

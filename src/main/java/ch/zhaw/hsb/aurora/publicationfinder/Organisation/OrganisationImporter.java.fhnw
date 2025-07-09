@@ -212,10 +212,22 @@ public class OrganisationImporter extends BaseImporter {
                     continue;
 
                 } else {
+                    String pathSection;
+
+                    if(metadataField.equals("dc.title")){
+
+                        pathSection = "/sections/fhnw" + ((String[]) valueDict.get("dc.type"))[0].substring(0, 2);
+
+
+                    }else{
+                       pathSection = "/sections/fhnw" + ((String[]) valueDict.get("dc.type"))[0].split(" ")[0];
+
+                    }
+
                     if (bodyValues.size() > 0) {
                         jsonNode.put("op", "add")
                                 .put("path",
-                                        "/sections/fhnw" + ((String[]) valueDict.get("dc.type"))[0].split(" ")[0]
+                                        pathSection
                                                 + this.sectionDict.get(metadataField) + "/" + metadataField)
                                 .set("value", bodyValues);
 

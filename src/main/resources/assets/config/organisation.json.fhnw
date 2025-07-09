@@ -162,7 +162,7 @@
                 ],
                 "multiple_values": false,
                 "merge_criteria": "crossref",
-                "section": "PublicationStep"
+                "section": "PublicationTypeTitleStep"
             },
             {
                 "field_name": "dc.type",

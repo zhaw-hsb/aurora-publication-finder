@@ -258,23 +258,41 @@ public class PropertyProviderConfiguration {
 
     public static String getCSRFTokenEndpoint() {
 
+        Object version;
+        try {
+            version = getDSpaceVersionShort();
+            
+            if(version.equals("7")){
+
+                return "/authn/status";
+
+            }else{
+                
+                return "/security/csrf";
+
+            }
+
+        
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // default
+        return null;
+
+    }
+
+
+     public static String getDSpaceVersionShort() {
+
         Object value;
         try {
             value = getInstance().get("dspace.version");
             
             if (value != null) {
 
-                String version = ((String)value).split("\\.")[0];
-
-                if(version.equals("7")){
-
-                    return "/authn/status";
-
-                }else{
-                    
-                    return "/security/csrf";
-
-                }
+                return ((String)value).split("\\.")[0];
 
             }
         } catch (Exception e) {
@@ -283,7 +301,7 @@ public class PropertyProviderConfiguration {
         }
 
         // default
-        return null;
+        return "7";
 
     }
 
