@@ -190,7 +190,7 @@
                 ],
                 "multiple_values": false,
                 "merge_criteria": "crossref",
-                "section": "zhawdescriptionclassic"
+                "section": "zhawtitle"
             },
             {
                 "field_name": "dc.type",

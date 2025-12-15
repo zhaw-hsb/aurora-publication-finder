@@ -30,7 +30,7 @@ public class OrganisationDuplicateCheck extends DuplicateCheck {
 
     @Override
     public String getSection(String type) {
-        return "zhawdescriptionclassic";
+        return "zhawtitle";
     }
     
 }

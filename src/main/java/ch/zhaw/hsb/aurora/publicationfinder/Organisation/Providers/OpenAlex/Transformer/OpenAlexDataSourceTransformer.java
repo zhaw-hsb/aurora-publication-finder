@@ -227,12 +227,20 @@ public class OpenAlexDataSourceTransformer extends DataSourceTransformerAbstract
             ArrayNode authors = (ArrayNode) authorsObj;
             for (int i = 0; i < authors.size(); i++) {
                 String author = authors.get(i).asText();
-                String result = StringUtil.replaceLast(author, " ", ",");
-                String[] firstLastName = result.split(",");
-                if (result.contains(",")) {
-                    result = String.join(", ", firstLastName[1], firstLastName[0]);
-                } else {
-                    result = firstLastName[0];
+                String result;
+                //openalex provides different structures for authors, one being "firstname lastname" and now, most recently, "lastname, firstname"
+                if(author.contains(",")){
+                    result = author;
+                }else{
+                    //only last space will be marked
+                    result = StringUtil.replaceLast(author, " ", ",");
+                    String[] firstLastName = result.split(",");
+                    if (result.contains(",")) {
+                        result = String.join(", ", firstLastName[1], firstLastName[0]);
+                    } else {
+                        //if only one name
+                        result = firstLastName[0];
+                    }
                 }
                 results.add(result);
             }

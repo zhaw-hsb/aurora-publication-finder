@@ -94,7 +94,7 @@ match.string = dc.identifier.doi
 
 
 ### Path for output files (outside JAR)
-externalfile.path = /var/lib/tomcat9/webapps/hsb-dspace-7/aurora
+externalfile.path = /var/lib/tomcat-current/webapps/hsb-dspace/aurora
 
 ### DSpace Version to set how the csrf token is received
 dspace.version = 8.0.0

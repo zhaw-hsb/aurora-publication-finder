@@ -45,6 +45,7 @@ public abstract class DuplicateCheck {
     Map<String, Map<String, Object>> duplicateData;
     JsonNode typesMapping;
     Map<String, String> fieldMapping;
+    String workspaceConfig;
     String workflowConfig;
     String publishedConfig;
     String doiFieldName;
@@ -85,6 +86,7 @@ public abstract class DuplicateCheck {
         this.typeFieldName = this.fieldMapping.get("type").toString();
 
         this.publishedConfig = "";
+        this.workspaceConfig = "&configuration=workspace";
         this.workflowConfig = "&configuration=workflow";
 
         this.repositoryAPIUrl = PropertyProviderConfiguration.getRepositoryAPIUrl();
@@ -205,17 +207,16 @@ public abstract class DuplicateCheck {
             }
         }
 
-        for (String config : new String[] { this.publishedConfig, this.workflowConfig }) {
+        for (String config : new String[] { this.publishedConfig, this.workspaceConfig, this.workflowConfig }) {
 
             duplicateItem.put("config", config);
 
-            // "contains" is needed because we only have a part of the title
-            String titleUrl = this.repositoryAPIUrl + "/discover/search/objects?f.title="
-                    + URLEncoder.encode(shortestTitle, StandardCharsets.UTF_8) + ",contains" + config;
+            String titleUrl = this.repositoryAPIUrl + "/discover/search/objects?query=dc.title:"
+                    + URLEncoder.encode("\""+shortestTitle+"\"", StandardCharsets.UTF_8) + config;
 
             duplicateItem.put("titleURL", titleUrl);
 
-
+            
             String data = this.getData(config, titleUrl);
 
             if (data != null) {
@@ -263,12 +264,12 @@ public abstract class DuplicateCheck {
         int responseDoiLength = 0;
 
         // check if there exists an entry with same doi
-        for (String config : new String[] { this.publishedConfig, this.workflowConfig }) {
+        for (String config : new String[] { this.publishedConfig, this.workspaceConfig, this.workflowConfig }) {
 
             duplicateItem.put("config", config);
 
-            String doiUrl = this.repositoryAPIUrl + "/discover/search/objects?f.doi="
-                    + URLEncoder.encode(duplicateItem.get("doi").toString(), StandardCharsets.UTF_8) + ",equals"
+            String doiUrl = this.repositoryAPIUrl + "/discover/search/objects?query=dc.identifier.doi:"
+                    + URLEncoder.encode(duplicateItem.get("doi").toString(), StandardCharsets.UTF_8)
                     + config;
             duplicateItem.put("doiURL", doiUrl);
 
@@ -378,11 +379,30 @@ public abstract class DuplicateCheck {
      */
     private String getTitle(JsonNode responseDoiJsonNode) {
 
-        String title = responseDoiJsonNode.get("_embedded")
-                .get("indexableObject").get("metadata")
-                .get(this.titleFieldName).get(0).get("value").asText();
+        return responseDoiJsonNode.get("_embedded")
+                .get("indexableObject").get("name").asText();
+    }
 
-        return title;
+      /**
+     * Method to get the title of a workspace publication in the repository
+     * 
+     * @param responseDoiJsonNode  the JSON Array of the response from the
+     *                             repository
+     * @return String
+     */
+    private String getTitleWorkspace(JsonNode responseDoiJsonNode, String type) {
+
+        JsonNode indexableObject = responseDoiJsonNode.path("_embedded").path("indexableObject");
+        JsonNode nameNode = indexableObject.path("name");
+
+        //for published items visible in the workspace of the import user
+        if (!nameNode.isMissingNode() && !nameNode.isNull()) {
+            return nameNode.asText();
+        }
+
+        JsonNode itemNameNode = indexableObject.at("/sections/"+this.getSection(type)+"/"+this.titleFieldName+"/0/value");
+        //for workflow and workspace items
+        return itemNameNode.isMissingNode() || itemNameNode.isNull() ? "" : itemNameNode.asText();
     }
 
     /**
@@ -395,13 +415,13 @@ public abstract class DuplicateCheck {
      */
     private String getTitleWorkflow(JsonNode responseDoiJsonNode, String type) {
 
-        String title = responseDoiJsonNode.get("_embedded")
+        return responseDoiJsonNode.get("_embedded")
                 .get("indexableObject").get("_embedded")
                 .get("workflowitem").get("sections")
                 .get(this.getSection(type)).get(this.titleFieldName).get(0)
                 .get("value").asText();
 
-        return title;
+       
     }
 
     /**
@@ -419,6 +439,8 @@ public abstract class DuplicateCheck {
             return getTitle(responseDoiJsonNode);
         } else if (config == this.workflowConfig) {
             return getTitleWorkflow(responseDoiJsonNode, type);
+        } else if (config == this.workspaceConfig) {
+            return getTitleWorkspace(responseDoiJsonNode, type);
         } else {
             return null;
         }
@@ -476,7 +498,7 @@ public abstract class DuplicateCheck {
     private String getData(String config, String url) {
         if (config == this.publishedConfig) {
             return getData(url);
-        } else if (config == this.workflowConfig) {
+        } else if (config == this.workflowConfig || config == this.workspaceConfig) {
             return getDataAuthenticated(url);
         } else {
             return null;

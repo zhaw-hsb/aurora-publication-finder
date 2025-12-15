@@ -42,13 +42,16 @@ public class OrganisationFieldsTransformer extends BaseOrganisationTransformer {
     public String[] getAuthors(InternModel internModel) {
 
         List<PersonModel> authorsList = internModel.getAuthors();
-        String[] authors = new String[authorsList.size()];
-        int count = 0;
-        for (PersonModel person : authorsList) {
-            authors[count++] = person.getAuthor();
-
+        if(authorsList !=null){
+            String[] authors = new String[authorsList.size()];
+            int count = 0;
+            for (PersonModel person : authorsList) {
+                authors[count++] = person.getAuthor();
+            }
+            return authors;
         }
-        return authors;
+        
+        return null;
 
     }
 
@@ -123,22 +126,14 @@ public class OrganisationFieldsTransformer extends BaseOrganisationTransformer {
 
         if (internModel.getLicenses() != null) {
 
-            String[] newLicenses = new String[internModel.getLicenses().length];
-            int count = 0;
-
             if(internModel.getLicenses().length>0){
                 for (String license : internModel.getLicenses()) {
                     JsonNode licenseNode = this.licenses.get(license);
                     if(licenseNode != null) {
-                        newLicenses[count] = licenseNode.asText();
-                    } else {
-    
-                        newLicenses[count] = this.licenses.get("Default").asText();
-    
-                    }
-                    count++;
+                        return new String[]{licenseNode.asText()};
+                        
+                    } 
                 }
-                return newLicenses;
 
             }
             

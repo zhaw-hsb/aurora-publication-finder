@@ -43,6 +43,7 @@ public abstract class BaseDataSourceProviderAbstract implements DataSourceProvid
     private String connectionElement;
     private String metadata;
     private String itemsSection;
+    private String timestamp;
     private Provider2InternMapping mapping;
     private String providerName;
     
@@ -141,6 +142,11 @@ public abstract class BaseDataSourceProviderAbstract implements DataSourceProvid
     public String getItemsSection() {
         return this.itemsSection;
     }
+
+    @Override
+    public String getTimestamp() {
+        return this.timestamp;
+    }
     
     @Override
     public ArrayNode getRetrievedData() {
@@ -199,7 +205,7 @@ public abstract class BaseDataSourceProviderAbstract implements DataSourceProvid
         this.connectionElement = PropertyProviderConfiguration.getFieldByName(providerName,"connectionElement");
         this.metadata = PropertyProviderConfiguration.getFieldByName(providerName,"metadata");
         this.itemsSection = PropertyProviderConfiguration.getFieldByName(providerName,"itemsSection");
-
+        this.timestamp = PropertyProviderConfiguration.getFieldByName(providerName, "timestamp");
         return this;
     }
 

@@ -1,5 +1,8 @@
 # Aurora Publication Finder
 
+## Version
+Dieser Code funktioniert mit DSpace Version 8.1+ und 7.6.2+. Für ältere Versionen nutzen Sie bitte den Code aus dem Tag publication-finder-1.0.
+
 ## Über
 Der Publication Finder wurde als erstes Tool im von swissuniversities ko-finanzierten Projekt AURORA von der ZHAW Zürcher Hochschule für Angewandte Wissenschaften und der Fachhochschule Nordwestschweiz FHNW entwickelt. Dieses Tool wird verwendet, um neue wissenschaftliche Veröffentlichungen zu finden, bei denen die Autor*innen einer bestimmten Institution (z.B. der ZHAW) angehören. Es durchsucht dazu grosse bibliografische Datenbanken. Die Informationen (beschreibenden Metadaten) über diese Publikationen werden dann so aufbereitet, dass sie in das eigene institutionelle Repositorium importiert werden können.
 
@@ -179,6 +182,16 @@ Bei jeder Ausführung des Programms wird der Zeitstempel auf das aktuelle Datum 
 
 Wenn die Datei in externalfile.path nicht existiert, wird stattdessen der Zeitstempel aus src/main/resources/assets/config/timestamp.txt verwendet.
 
+Der Timestamp kann zusätzlich für jeden Provider in der Datei src/main/resources/assets/config/organisation.properties konfiguriert werden. Dies wurde für Openalex so konfiguriert, da die Abfrage nur nach Publikationsdatum und nicht nach Aufnahmedatum erfolgen kann. Openalex bietet nur eine kostenpflichtige Abfrage nach Aufnahmedatum an.
+
+Die Reihenfolge, in der der Timestamp gelesen wird, ist:
+
+1. src/main/resources/assets/config/organisation.properties
+2. externalfile.path/timestamp.txt
+3. src/main/resources/assets/config/timestamp.txt
+
+Der zuerst gefundene Timestamp wird verwendet.
+
 <a name="konfigurationen-für-die-datenabfrage-und-datenbuilder" />
 
 ## Konfigurationen für die Datenabfrage und Datenbuilder
@@ -222,6 +235,7 @@ Um Provider hinzuzufügen, müssen die unten aufgelisteten Pflichtfelder definie
 |{providerName}.connectionElement	|Feld, welches als Verbindung von Queries in der URL verwendet wird.	|Ja	|openalex.connectionElement = ,|
 |{providerName}.metadata	|Feld, wo die Metadaten in der Response gespeichert sind.	|Ja	|openalex.metadata = meta|
 |{providerName}.itemsSection	|Section, wo die Einträge gespeichert sind.	|Ja	|openalex.itemsSection = results|
+|{providerName}.timestamp	|Timestamp für die Abfrage.	|Nein	|openalex.timestamp = 2025-01-01|
 
 <a name="konfigurationen-für-die-datentransformation"/>
 

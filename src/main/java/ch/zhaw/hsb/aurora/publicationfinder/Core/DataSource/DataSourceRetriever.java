@@ -52,23 +52,30 @@ public class DataSourceRetriever {
 
             this.dataSourceProvider = dataSourceProvider;
             InputStream inputStream;
+            if(this.dataSourceProvider.getTimestamp()!= null) {
+                this.date = this.dataSourceProvider.getTimestamp();
+            
+            }else{
+                // Read from external file if it exists
+                if (Files.exists(Paths.get(PropertyProviderConfiguration.getExternalFilePath() + "/timestamp.txt"))) {
+                    inputStream = new FileInputStream(PropertyProviderConfiguration.getExternalFilePath() + "/timestamp.txt");
 
-            if (Files.exists(Paths.get(PropertyProviderConfiguration.getExternalFilePath() + "/timestamp.txt"))) {
-                inputStream = new FileInputStream(PropertyProviderConfiguration.getExternalFilePath() + "/timestamp.txt");
+                } else {
 
-            } else {
+                    // Read from JAR if external file does not exist
+                    inputStream = Main.class.getClassLoader().getResourceAsStream("assets/config/timestamp.txt");
+                    if (inputStream == null) {
+                        throw new FileNotFoundException("Timestamp file not found inside JAR.");
+                    }
 
-                // Read from JAR if external file does not exist
-                inputStream = Main.class.getClassLoader().getResourceAsStream("assets/config/timestamp.txt");
-                if (inputStream == null) {
-                    throw new FileNotFoundException("Timestamp file not found inside JAR.");
                 }
 
+                this.date = new String(inputStream.readAllBytes());
+                inputStream.close();
+
             }
+            
 
-            this.date = new String(inputStream.readAllBytes());
-
-            inputStream.close();
 
         } catch (IOException e) {
             // TODO Auto-generated catch block

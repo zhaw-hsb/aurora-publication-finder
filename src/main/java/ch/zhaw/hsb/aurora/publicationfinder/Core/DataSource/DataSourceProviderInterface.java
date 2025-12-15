@@ -122,6 +122,12 @@ public interface DataSourceProviderInterface {
     public String getItemsSection();
 
     /**
+     * Method to get timestamp
+     * @return String
+     */
+    public String getTimestamp();
+
+    /**
      * Method to get the data which was retrieved from the source
      * @return JSONArray
      */

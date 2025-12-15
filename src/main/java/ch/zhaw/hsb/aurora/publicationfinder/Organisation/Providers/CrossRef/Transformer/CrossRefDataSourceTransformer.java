@@ -216,6 +216,10 @@ public class CrossRefDataSourceTransformer extends DataSourceTransformerAbstract
         ArrayNode authorArrayNode = (ArrayNode) this.getAuthor(element, fieldNamesAuthor);
         ArrayNode affArrayNode = (ArrayNode) this.getAffiliations(element, fieldNamesAffiliations);
 
+        if(authorArrayNode==null){
+            return null;
+        }
+
         for (int i = 0; i < authorArrayNode.size(); i++) {
             PersonModel person = ModelFactory.createPersonModel();
             person.setAuthor(authorArrayNode.get(i).asText());
@@ -238,6 +242,10 @@ public class CrossRefDataSourceTransformer extends DataSourceTransformerAbstract
         ArrayNode authors_given = authorsGiven instanceof ArrayNode ? (ArrayNode) authorsGiven : null;
 
         ArrayNode results = new ArrayNode(factory);
+       
+        if(authors_family.size()!=authors_given.size()){
+            return null;
+        }
 
         if (authors_family != null && authors_given != null) {
             for (int i = 0; i < authors_family.size(); i++) {
