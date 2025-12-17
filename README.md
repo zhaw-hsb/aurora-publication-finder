@@ -125,7 +125,7 @@ Configurable files:
 ## Prerequisites
 
 * Java Version 17
-* Repository in DSpace 7+
+* Repository in DSpace 7.6.2+ / 8.1+
 
 <a name="installation"/>
 

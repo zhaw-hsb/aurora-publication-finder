@@ -123,7 +123,7 @@ Konfigurierbare Dateien:
 ## Voraussetzungen
 
 * Java Version 17
-* Repositorium in DSpace 7+
+* Repositorium in DSpace 7.6.2+ / 8.1+
 
 <a name="installation"/>
 
