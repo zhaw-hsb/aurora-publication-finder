@@ -15,11 +15,16 @@ import java.util.List;
 import java.util.Map;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyProviderConfiguration;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.UserInputConfiguration;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.DataSource.DataSourceContainerAbstract;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.DataSource.DataSourceProviderInterface;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Fusion.Fusion;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.HelpdeskLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Matcher.SingleFieldMatcher;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Merger.FieldMerger;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.Service.EmailReportService;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.Service.EmailService;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.FileUtil;
 import ch.zhaw.hsb.aurora.publicationfinder.Organisation.OrganisationDuplicateCheck;
 import ch.zhaw.hsb.aurora.publicationfinder.Organisation.OrganisationImporter;
@@ -34,6 +39,22 @@ import ch.zhaw.hsb.aurora.publicationfinder.Organisation.Providers.OpenAlex.Open
  */
 public class Application extends DataSourceContainerAbstract implements Runnable {
 
+    private final EmailReportService emailReportService;
+    protected String date;
+
+
+    private Application(){
+
+        this.emailReportService = new EmailReportService(new EmailService());
+
+        //on errors send email and exit program
+        AdminLogCollector.setOnErrorHandler(errors -> {
+            emailReportService.sendReports(true);
+            System.exit(1);
+        });
+
+    }
+
     /**
      * Method to create the application
      * @return Application
@@ -43,6 +64,7 @@ public class Application extends DataSourceContainerAbstract implements Runnable
         Application application = new Application();
         application.registerDataSources();
 
+        
         return application;
     }
 
@@ -56,10 +78,18 @@ public class Application extends DataSourceContainerAbstract implements Runnable
 
     }
 
+    protected void setDate(String date){
+        this.date = date;
+
+    }
+
+
+    @Override
     public void run() {
 
-        System.out.println("run:");
+        UserInputConfiguration.setDate(this.date);
 
+        
         List<Map<String, Map<String, Object>>> listOfMaps = new ArrayList<Map<String, Map<String, Object>>>();
 
         // Transform (WP3)
@@ -71,7 +101,7 @@ public class Application extends DataSourceContainerAbstract implements Runnable
         }
 
         // Match (WP4)
-        SingleFieldMatcher matcher = new SingleFieldMatcher(listOfMaps);
+        SingleFieldMatcher matcher = new SingleFieldMatcher(listOfMaps, this.dataSourceProviders);
         List<Map<String, Map<String, Object>>> listOfMapsMatched = matcher.getAllMatchedData();
 
         // Merge (WP4)
@@ -80,6 +110,7 @@ public class Application extends DataSourceContainerAbstract implements Runnable
 
         // Fuse merged and non-matched back together
         Map<String, Map<String, Object>> allData = Fusion.fuseMergedAndNonMatched(mergedData, listOfMaps);
+        HelpdeskLogCollector.logInfo("All found and merged items: "+ allData.size());
 
         // Duplicate Check (WP4)
         OrganisationDuplicateCheck duplicateCheck = new OrganisationDuplicateCheck(allData);
@@ -89,10 +120,15 @@ public class Application extends DataSourceContainerAbstract implements Runnable
         OrganisationImporter importer = new OrganisationImporter(allDeduplicatedData);
         importer.importData();
 
+        // Send email reports
+        emailReportService.sendReports(false);
+
         // Timestamp to limit data
         FileUtil.writeToFile(Paths.get(PropertyProviderConfiguration.getExternalFilePath()+"/timestamp.txt"),
         LocalDate.now().toString());
 
     }
+
+
 
 }

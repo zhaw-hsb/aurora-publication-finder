@@ -26,6 +26,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyConfiguration;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyProviderConfiguration;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.HelpdeskLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Mapping.Intern2OrganisationMapping;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.ConverterUtil;
 import ch.zhaw.hsb.aurora.publicationfinder.Modules.DSpace.Service.HTTPService;
@@ -139,11 +141,11 @@ public abstract class DuplicateCheck {
         long finish = System.currentTimeMillis();
         long timeElapsed = finish - start;
 
-        System.out.println("Deduplicated data size: " + this.allData.size());
-        System.out.println("Duplicated data size: " + this.duplicateData.size());
+        HelpdeskLogCollector.logInfo("Duplicate items: "+ this.duplicateData.size());
+        HelpdeskLogCollector.logInfo("Items ready to import: "+this.allData.size());
 
         if (PropertyConfiguration.isTestingEnabled()) {
-            System.out.println("Deduplication completed in " + timeElapsed / 1000 + " seconds.");
+            AdminLogCollector.logInfo("Deduplication completed in " + timeElapsed / 1000 + " seconds.");
             ConverterUtil.organisationModelToCSV(this.allData, "/outputs/deduplicatedData.csv");
             ConverterUtil.organisationModelToCSV(this.duplicateData, "/outputs/duplicateData.csv");
         }

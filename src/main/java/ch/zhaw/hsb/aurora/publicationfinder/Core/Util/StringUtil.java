@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
+
 /**
  * This class offers utilities for String.
  * 
@@ -40,10 +42,9 @@ public class StringUtil {
     /**
      * Method to get a string builder of http request
      * @param connection the input stream of a connection
-     * @param url the url for the http request
      * @return StringBuilder
      */
-    public static StringBuilder getStringBuilder(InputStream connection, URL url) {
+    public static StringBuilder getStringBuilder(InputStream connection) {
         // read return message and convert to string
         StringBuilder sb = new StringBuilder();
 
@@ -57,8 +58,7 @@ public class StringUtil {
                 br.close();
 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                AdminLogCollector.logWarning("Cannot read from the connection.", e);
             }
             return sb;
         }

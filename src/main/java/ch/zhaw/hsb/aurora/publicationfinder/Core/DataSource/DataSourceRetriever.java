@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Main;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyProviderConfiguration;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Service.HttpService;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.JSONUtil;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.URLUtil;
@@ -78,8 +79,7 @@ public class DataSourceRetriever {
 
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logErrorAndExit("Error reading timestamp.txt", e);
         }
 
     }
@@ -111,8 +111,6 @@ public class DataSourceRetriever {
      */
     private ArrayNode getDataFromType(String type) {
 
-        System.out.println("Type: " + type);
-
         URL url;
         ArrayNode arrayNodeAll = new ArrayNode(JsonNodeFactory.instance);
         String[] searchList = null;
@@ -126,7 +124,6 @@ public class DataSourceRetriever {
                 searchList = dataSourceProvider.getAffiliations();
                 break;
             default:
-                System.out.println("Unknown type:  " + type);
         }
 
         for (int index = 0; index < searchList.length; index++) {
@@ -136,9 +133,8 @@ public class DataSourceRetriever {
 
                 try {
                     url = this.getURL(type, nextCursor, index);
-                    System.out.println("URL: " + url);
                 } catch (Exception e) {
-
+                    AdminLogCollector.logWarning("Url exception with "+dataSourceProvider.getName()+" type "+type, e);
                     return null;
                 }
 
@@ -167,8 +163,7 @@ public class DataSourceRetriever {
                     arrayNodeAll = JSONUtil.concatArray(arrayNodeAll, results);
 
                 } catch (JsonProcessingException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    AdminLogCollector.logWarning("Error retrieving data from: "+url, e);
                 }
   
 
@@ -177,7 +172,6 @@ public class DataSourceRetriever {
             }
         }
 
-        System.out.println("All elements with type " + type + ": " + arrayNodeAll.size());
         return arrayNodeAll;
     }
 
@@ -193,7 +187,6 @@ public class DataSourceRetriever {
     private URL getURL(String type, String nextCursor, Integer index) throws Exception {
 
         try {
-            System.out.println("Type bei getUrl:  " + type + " (" + index.toString() + ")");
             URL url = null;
             switch (type) {
                 case "ror":
@@ -216,14 +209,11 @@ public class DataSourceRetriever {
                     break;
                 default:
                     url = null;
-                    System.out.println("Unknown type:  " + type);
             }
-
+            AdminLogCollector.logInfo(url.toString());
             return url;
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-
             throw new Exception(e);
 
         }

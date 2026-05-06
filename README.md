@@ -23,9 +23,14 @@ The Publication Finder was the first tool to be developed by the ZHAW Zurich Uni
     - [Import](#import)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+  - [Usage](#usage)
+    - [Syntax](#syntax)
+    - [Option](#option)
+    - [Example](#example)
   - [Registration of the providers](#registration-of-the-providers)
   - [General configurations](#general-configurations)
     - [Test and CSV configurations](#test-and-csv-configurations)
+    - [Logmails](#logmails)
     - [System configurations](#systemkonfig)
     - [Timestamp configurations](#timestamp-configurations)
   - [Configurations for the data query and data builder](#configurations-for-the-data-query-and-data-builder)
@@ -138,7 +143,42 @@ Configurable files:
   ```
   mvn clean package
   ```
+  or with profile (see [Configuration for organisation](#configuration-for-organisation))
+  ```
+  mvn clean package -Pdev
+  mvn clean package -Ptest
+  mvn clean package -Pprod
+  ```
+
   The file is then located in the target folder.
+
+  
+<a name="usage"/>
+
+## Usage
+
+<a name="syntax"/>
+
+### Syntax
+Execute the command in the following format:
+
+```bash
+ java -jar ./target/publicationfinder-jar-with-dependencies.jar -date [option]
+```
+
+<a name="option"/>
+
+### Option
+| flag | description                                     | mandatory |
+|------|-------------------------------------------------|-----------|
+| `-date` | Defines the starting point for the search for publications. All entries from this date up to the present day are included. <br> <br>For example: <br>2026-01-01  | No       |
+
+<a name="example"/>
+
+### Example
+```bash
+-date 2026-01-01
+```
 
 <a name="registrierung-der-provider"/>
 
@@ -147,6 +187,35 @@ In the publicationfinder\Application.java class the different providers are regi
 
 For example:<br>
 this.registerDataSource(new OpenAlexDataSourceProvider());
+
+<a name="logmails"/>
+
+### Logmails
+src/main/resources/assets/config/organisation.properties
+
+The logs are grouped into two categories (Admin / Helpdesk) and sent to the relevant email address at the end of the program.
+
+| field name      | description  | mandatory  | example  |
+| ------------- | ------------- | ------------- | ------------- |
+| organisation.mail.admin	 | E-mail recipient for admin logs.	 | Yes | manumusterperson@muster.ch |
+| organisation.mail.helpdesk	 | E-mail recipient for helpdesk logs.	 | Yes | manumusterperson@muster.ch |
+
+src/main/resources/assets/config/credentials.properties
+| field name      | description  | mandatory  | example  |
+| ------------- | ------------- | ------------- | ------------- |
+| mail	 | The email address of the sender of the log emails. | Yes | manumusterperson@muster.ch |
+| mail.password	 | The password for the email address of the sender of the log emails.	 | Yes | admin123 |
+
+The LogCollectors and the EmailReportService are located here:
+- src/main/java/ch/zhaw/hsb/aurora/publicationfinder/Core/Service/EmailReportService.java
+- src/main/java/ch/zhaw/hsb/aurora/publicationfinder/Core/LogCollector/AdminLogCollector.java
+- src/main/java/ch/zhaw/hsb/aurora/publicationfinder/Core/LogCollector/HelpdeskLogCollector.java
+
+Various logs can be collected:
+- Informations (logInfo) - HelpdeskLogCollector and AdminLogCollector
+- Warnings (logWarning) - only in AdminLogCollector
+- Errors (logErrorAndExit) -  only in AdminLogCollector, and the program exits.
+
 
 <a name="allgemeine-konfigurationen"/>
 
@@ -212,8 +281,49 @@ src/main/resources/assets/config/organisation.properties
 | field name      | description  | mandatory  | example  |
 | ------------- | ------------- | ------------- | ------------- |
 | organisation.rors	 | Organisation ROR ID as URL.	 | Yes | https://ror.org/1234 |
-| organisation.repositoryAPIUrl | 	Server API URL of the repository. | Yes | https://digitalcollection.zhaw.ch/server/api |
+| organisation.repositoryAPIUrl | 	Server API URL of the repository. | Yes | https://digitalcollection.zhaw.ch/server/api oder ${app.url}/server/api (with pom.xml profiles) |
 |organisation.affiliations.exceptions|Names of the institutions which should not be taken into account. Different spellings or institutions are separated with \|\ and a new line.|No|ON exception\|\ <br>Organisation Name Exception <br><br>Concrete example: <br>Zurich University of Applied Sciences in Business Administration|
+
+Configuration in pom.xml, if the organisation.repositoryAPIUrl needs to be adjusted depending on the environment (Maven profile). Example for a production and test environment with different URLs:
+
+```
+<profiles>
+  <profile>
+    <id>test</id>
+    <properties>
+      <maven.compiler.source>
+        17
+      </maven.compiler.source>
+      <maven.compiler.target>
+        17
+      </maven.compiler.target>
+      <encoding>
+        UTF-8
+      </encoding>
+      <app.url>
+        https://digitalcollection-test.zhaw.ch
+      </app.url>
+    </properties>
+  </profile>
+  <profile>
+    <id>prod</id>
+    <properties>
+      <maven.compiler.source>
+        17
+      </maven.compiler.source>
+      <maven.compiler.target>
+        17
+      </maven.compiler.target>
+      <encoding>
+        UTF-8
+      </encoding>
+      <app.url>
+        https://digitalcollection.zhaw.ch
+      </app.url>
+    </properties>
+  </profile>
+</profiles>
+```
 
 <a name="konfiguration-zur-provider"/>
 

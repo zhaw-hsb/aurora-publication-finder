@@ -21,9 +21,14 @@ Der Publication Finder wurde als erstes Tool im von swissuniversities ko-finanzi
     - [Import](#import)
   - [Voraussetzungen](#voraussetzungen)
   - [Installation](#installation)
+  - [Verwendung](#verwendung)
+    - [Syntax](#syntax)
+    - [Option](#option)
+    - [Beispiel](#beispiel)
   - [Registrierung der Provider](#registrierung-der-provider)
   - [Allgemeine Konfigurationen](#allgemeine-konfigurationen)
     - [Test- und CSV-Konfigurationen](#testcsvkonfig)
+    - [Logmails](#logmails)
     - [Systemkonfigurationen](#systemkonfig)
     - [Timestamp Konfigurationen](#timestampkonfig)
   - [Konfigurationen für die Datenabfrage und Datenbuilder](#konfigurationen-für-die-datenabfrage-und-datenbuilder)
@@ -136,7 +141,40 @@ Konfigurierbare Dateien:
   ```
   mvn clean package
   ```
+  oder mit Profil (siehe [Konfiguration zur Organisation](#konfiguration-zur-organisation))
+  ```
+  mvn clean package -Pdev
+  mvn clean package -Ptest
+  mvn clean package -Pprod
+  ```
   Die Datei befindet sich dann im target Ordner.
+
+<a name="verwendung"/>
+
+## Verwendung
+
+<a name="syntax"/>
+
+### Syntax
+Führen Sie den Befehl in folgendem Format aus:
+
+```bash
+ java -jar ./target/publicationfinder-jar-with-dependencies.jar -date [option]
+```
+<a name="option"/>
+
+### Option
+| Flag | Beschreibung                                     | Pflicht |
+|------|-------------------------------------------------|-----------|
+| `-date` | Definiert den Startpunkt für die Suche nach Publikationen. Alle Einträge ab diesem Datum bis zum aktuellen Tag werden berücksichtigt. <br> <br>Zum Beispiel: <br>2026-01-01  | Nein       |
+
+<a name="beispiel"/>
+
+### Beispiel
+```bash
+-date 2026-01-01
+```
+
 
 <a name="registrierung-der-provider"/>
 
@@ -160,6 +198,34 @@ src/main/resources/assets/config/application.properties
 |csv.fieldseparator|Der Charakter, welcher die Spalten in einem CSV trennt.|Ja|,|
 |csv.valueseparator|Der Charakter, welcher die Werte innerhalb eine Spalte auf einer Reihe in einem CSV trennt.|Ja| \| \| |
 |testing.enabled|Wert, welcher das Programm im Testmodus laufen lässt. Im Testmodus werden die Publikationen in CSV geschrieben und Programmprints generiert.|Ja|true|
+
+<a name="logmails"/>
+
+### Logmails
+src/main/resources/assets/config/organisation.properties
+
+Die Logs werden in zwei Kategorien (Admin / Helpdesk) gesammelt und am Ende des Programms an die jeweilige E-Mail-Adresse versendet.
+
+| Feldname      | Beschreibung  | Pflicht  | Beispiel  |
+| ------------- | ------------- | ------------- | ------------- |
+| organisation.mail.admin	 | Emailempfänger für Adminlogs.	 | Ja | manumusterperson@muster.ch |
+| organisation.mail.helpdesk	 | Emailempfänger für Helpdesklogs.	 | Ja | manumusterperson@muster.ch |
+
+src/main/resources/assets/config/credentials.properties
+| Feldname      | Beschreibung  | Pflicht  | Beispiel  |
+| ------------- | ------------- | ------------- | ------------- |
+| mail	 | Emailadresse des Absenders der Logmails.	 | Ja | manumusterperson@muster.ch |
+| mail.password	 | Passwort der Emailadresse des Absenders der Logmails.	 | Ja | admin123 |
+
+Die LogCollectors und der EmailReportService befinden sich hier:
+- src/main/java/ch/zhaw/hsb/aurora/publicationfinder/Core/Service/EmailReportService.java
+- src/main/java/ch/zhaw/hsb/aurora/publicationfinder/Core/LogCollector/AdminLogCollector.java
+- src/main/java/ch/zhaw/hsb/aurora/publicationfinder/Core/LogCollector/HelpdeskLogCollector.java
+
+Es können verschiedene Logs gesammelt werden:
+- Informationen (logInfo) - HelpdeskLogCollector und AdminLogCollector
+- Warnungen (logWarning) - nur beim AdminLogCollector
+- Fehler (logErrorAndExit) - nur beim AdminLogCollector und das Programm wird beendet.
 
 <a name="systemkonfig"/>
 
@@ -208,8 +274,49 @@ src/main/resources/assets/config/organisation.properties
 | Feldname      | Beschreibung  | Pflicht  | Beispiel  |
 | ------------- | ------------- | ------------- | ------------- |
 | organisation.rors	 | ROR ID einer Organisation als URL.	 | Ja | https://ror.org/1234 |
-| organisation.repositoryAPIUrl | 	URL der Server API des Repositoriums. | Ja | https://digitalcollection.zhaw.ch/server/api |
+| organisation.repositoryAPIUrl | 	URL der Server API des Repositoriums. | Ja | https://digitalcollection.zhaw.ch/server/api oder ${app.url}/server/api (mit pom.xml Profilen) |
 |organisation.affiliations.exceptions|Namen der Institutionn welche nicht berücksichtigt werden sollen. Verschiedene Schreibweisen oder Institutionen werden mit \|\ und einer neuen Linie getrennt.|Nein|ON exception\|\ <br>Organisation Name Exception <br><br>Konkretes Beispiel: <br>Zurich University of Applied Sciences in Business Administration|
+
+Konfiguration im pom.xml, falls die organisation.repositoryAPIUrl je nach Umgebung (Maven Profil) angepasst werden soll. Beispiel für eine Prod und Test Umgebung mit unterschiedlicher URL:
+
+```
+<profiles>
+  <profile>
+    <id>test</id>
+    <properties>
+      <maven.compiler.source>
+        17
+      </maven.compiler.source>
+      <maven.compiler.target>
+        17
+      </maven.compiler.target>
+      <encoding>
+        UTF-8
+      </encoding>
+      <app.url>
+        https://digitalcollection-test.zhaw.ch
+      </app.url>
+    </properties>
+  </profile>
+  <profile>
+    <id>prod</id>
+    <properties>
+      <maven.compiler.source>
+        17
+      </maven.compiler.source>
+      <maven.compiler.target>
+        17
+      </maven.compiler.target>
+      <encoding>
+        UTF-8
+      </encoding>
+      <app.url>
+        https://digitalcollection.zhaw.ch
+      </app.url>
+    </properties>
+  </profile>
+</profiles>
+```
 
 <a name="konfiguration-zur-provider"/>
 

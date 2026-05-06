@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyConfiguration;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyProviderConfiguration;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Model.InternModel;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Model.PersonModel;
 
@@ -126,8 +127,7 @@ public class ConverterUtil {
                             }
                             
                         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                            AdminLogCollector.logWarning(path, e);
                         }
                     }
 
@@ -138,8 +138,8 @@ public class ConverterUtil {
 
             }
 
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
+        } catch (IOException e) {
+            AdminLogCollector.logWarning("Could not write to "+path, e);
         }
 
     }
@@ -208,8 +208,8 @@ public class ConverterUtil {
                 writer.append(PropertyConfiguration.getCsvEol());
             }
             
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
+        } catch (IOException e) {
+            AdminLogCollector.logWarning("Could not write csv "+path, e);
         }
 
     }
@@ -223,24 +223,16 @@ public class ConverterUtil {
     public static Map<String, JsonNode> JSONArrayToHashMap(ArrayNode jsonArray, String identifier) {
 
         Map<String, JsonNode> hashMap = new HashMap<>();
-        int count = 0;
         for (int i = 0; i < jsonArray.size(); i++) {
            
             String id = jsonArray.get(i).get(identifier).asText();
 
             JsonNode object = jsonArray.get(i);
-            if (hashMap.containsKey(id)) {
-
-                count++;
-
-            }
+            
             hashMap.put(id, object);
 
            
         }
-
-        System.out.println("Number of duplicates: " + count);
-        System.out.println("Size of HashMap: " + hashMap.size());
 
         return hashMap;
 

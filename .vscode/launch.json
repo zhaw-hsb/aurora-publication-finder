@@ -11,5 +11,22 @@
             "mainClass": "ch.zhaw.hsb.aurora.publicationfinder.Main",
             "projectName": "publicationfinder",
         },
+        {
+            "type": "java",
+            "name": "Main mit Datumsparameter",
+            "request": "launch",
+            "mainClass": "ch.zhaw.hsb.aurora.publicationfinder.Main",
+            "args": "-date 2025-03-03",
+            "projectName": "publicationfinder",
+        },
+
+                {
+            "type": "java",
+            "name": "Main mit falschem Datumsparameter",
+            "request": "launch",
+            "mainClass": "ch.zhaw.hsb.aurora.publicationfinder.Main",
+            "args": "-date 2025/03/03",
+            "projectName": "publicationfinder",
+        },
     ]
 }

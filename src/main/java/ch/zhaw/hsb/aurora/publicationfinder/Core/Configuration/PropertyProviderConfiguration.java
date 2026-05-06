@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Main;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
 
 /**
  * This class retrieves configuration properties from the organisation.properties file. 
@@ -42,16 +43,26 @@ public class PropertyProviderConfiguration {
 
         if (prop == null) {
 
+            String path = "assets/config/organisation.properties";
+            String localPath = "assets/config/organisation-local.properties";
+
+            if(Main.class.getClassLoader().getResource(localPath) != null){
+                path = localPath.toString();
+            }
+
             try (InputStream input = Main.class.getClassLoader().getResourceAsStream(
-                    "assets/config/organisation.properties"); InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
+                    path)) {
+
+                if (input == null){
+                    AdminLogCollector.logErrorAndExit(path+" doesn't exist.", null);
+                }
+                
                 Properties property = new Properties();
-                property.load(reader);
+                property.load(new InputStreamReader(input, StandardCharsets.UTF_8));
                 prop = property;
 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                throw new Exception("assets/config/organisation.properties could not be read.");
+                AdminLogCollector.logErrorAndExit(path+" could not be read.", e);
             }
 
         }
@@ -75,8 +86,7 @@ public class PropertyProviderConfiguration {
                 return rors;
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving organisation.rors", e);
         }
 
         return null;
@@ -99,8 +109,7 @@ public class PropertyProviderConfiguration {
                 return affiliations;
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving "+provider+".affiliations", e);
         }
 
         return null;
@@ -123,8 +132,7 @@ public class PropertyProviderConfiguration {
                 return affiliationExceptions;
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving organisation.affiliations.exceptions", e);
         }
 
         return null;
@@ -146,8 +154,8 @@ public class PropertyProviderConfiguration {
                 return value.toString();
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving "+ provider + "." + fieldName, e);
+
         }
        
 
@@ -168,8 +176,7 @@ public class PropertyProviderConfiguration {
                 return value.toString();
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logErrorAndExit("Error retrieving organisation.repositoryAPIUrl", e);
         }
 
         return null;
@@ -188,8 +195,7 @@ public class PropertyProviderConfiguration {
                 return value.toString().split("\\|", 0);
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving organisation.specialCharacters", e);
         }
 
         return null;
@@ -208,8 +214,48 @@ public class PropertyProviderConfiguration {
                 return value.toString();
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logErrorAndExit("Error retrieving organisation.collectionId", e);
+
+        }
+
+        return null;
+    }
+
+    /**
+     * Method to get the collection id where publications will be saved
+     * @return String
+     */
+    public static String getMailAdmin() {
+
+        Object value;
+        try {
+            value = getInstance().get("organisation.mail.admin");
+            if (value != null) {
+                return value.toString();
+            }
+        } catch (Exception e) {
+            AdminLogCollector.logWarning("Error retrieving organisation.mail.admin", e);
+
+        }
+
+        return null;
+    }
+
+      /**
+     * Method to get the collection id where publications will be saved
+     * @return String
+     */
+    public static String getMailHelpdesk() {
+
+        Object value;
+        try {
+            value = getInstance().get("organisation.mail.helpdesk");
+            if (value != null) {
+                return value.toString();
+            }
+        } catch (Exception e) {
+            AdminLogCollector.logWarning("Error retrieving organisation.mail.helpdesk", e);
+
         }
 
         return null;
@@ -229,8 +275,7 @@ public class PropertyProviderConfiguration {
             }
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving match.string", e);
         }
 
         return "dc.identifier.doi";
@@ -247,8 +292,8 @@ public class PropertyProviderConfiguration {
                 return value.toString();
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving externalfile.path", e);
+
         }
 
         // default
@@ -258,24 +303,17 @@ public class PropertyProviderConfiguration {
 
     public static String getCSRFTokenEndpoint() {
 
-        Object version;
-        try {
-            version = getDSpaceVersionShort();
-            
-            if(version.equals("7")){
-
-                return "/authn/status";
-
-            }else{
-                
-                return "/security/csrf";
-
-            }
-
+        int version;
+        version = getDSpaceVersionShort();
         
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if(version == 7){
+            return "/authn/status";
+
+        }else if (version > 7){
+            return "/security/csrf";
+
+        }else{
+            AdminLogCollector.logErrorAndExit("DSpace version below 7 is not supported.", null);
         }
 
         // default
@@ -284,24 +322,24 @@ public class PropertyProviderConfiguration {
     }
 
 
-     public static String getDSpaceVersionShort() {
+     public static int getDSpaceVersionShort()  {
 
         Object value;
-        try {
-            value = getInstance().get("dspace.version");
-            
+        try{
+            value = getInstance().get("dspace.version"); 
             if (value != null) {
+            String majorVersion = ((String)value).split("\\.")[0];
+            return Integer.parseInt(majorVersion);
 
-                return ((String)value).split("\\.")[0];
-
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
 
-        // default
-        return "7";
+        }catch(Exception e){
+            AdminLogCollector.logErrorAndExit("Error retrieving dspace.version", e);
+        }
+        
+       
+
+        return -1;
 
     }
 

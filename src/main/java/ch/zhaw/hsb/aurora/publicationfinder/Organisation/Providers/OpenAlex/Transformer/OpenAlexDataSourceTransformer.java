@@ -95,7 +95,7 @@ public class OpenAlexDataSourceTransformer extends DataSourceTransformerAbstract
         }
 
         try {
-            internModel.setDOI(new String[] { (String) this.getDOI(element, this.fieldDict.get("DOI")) });
+            internModel.setDOI(new String[] { ((String) this.getDOI(element, this.fieldDict.get("DOI"))).split("\\?")[0] });
         } catch (Exception e) {
             internModel.setDOI(null);
         }
@@ -364,8 +364,6 @@ public class OpenAlexDataSourceTransformer extends DataSourceTransformerAbstract
             return null;
 
         } catch (ClassCastException e) {
-            System.out.println(abstractElem.getClass());
-            System.out.println(e);
             return null;
         }
 

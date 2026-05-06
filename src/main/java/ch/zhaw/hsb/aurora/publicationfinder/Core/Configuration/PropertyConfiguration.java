@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import ch.zhaw.hsb.aurora.publicationfinder.Main;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
 
 /**
  * This class retrieves configuration properties from the application.properties file. 
@@ -41,17 +42,20 @@ public class PropertyConfiguration {
 
         if (prop == null) {
 
-            try (InputStream input = Main.class.getClassLoader().getResourceAsStream(
-                    "assets/config/application.properties"); InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
-                        
+            String path = "assets/config/application.properties";
+
+            try (InputStream input = Main.class.getClassLoader().getResourceAsStream(path)) {
+
+                if (input == null){
+                    AdminLogCollector.logErrorAndExit(path+" doesn't exist.", null);
+                }
+
                 Properties property = new Properties();
-                property.load(reader);
+                property.load(new InputStreamReader(input, StandardCharsets.UTF_8));
                 prop = property;
 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                throw new Exception("config/application.properties could not be read.");
+                AdminLogCollector.logErrorAndExit(path+" could not be read.", e);
             }
 
         }
@@ -73,8 +77,7 @@ public class PropertyConfiguration {
                 return value.toString();
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving csv.eol", e);
         }
 
         // default
@@ -95,8 +98,7 @@ public class PropertyConfiguration {
                 return value.toString();
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving csv.eol", e);
         }
 
         // default
@@ -118,8 +120,7 @@ public class PropertyConfiguration {
                 return value.toString();
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving csv.valueseparator", e);
         }
 
         // default
@@ -141,8 +142,7 @@ public class PropertyConfiguration {
                 return Boolean.parseBoolean(value.toString());
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Error retrieving testing.enabled", e);
         }
 
         // default

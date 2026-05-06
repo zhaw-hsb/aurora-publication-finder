@@ -16,6 +16,8 @@ import java.util.Map.Entry;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyConfiguration;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyProviderConfiguration;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.DataSource.DataSourceProviderInterface;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.HelpdeskLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.ConverterUtil;
 
 /**
@@ -27,15 +29,17 @@ import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.ConverterUtil;
 public class SingleFieldMatcher implements MatcherInterface {
 
     List<Map<String, Map<String, Object>>> allData;
+    ArrayList<DataSourceProviderInterface> dataSourceProviders;
 
     /**
      * Constructor
      * @param listOfMaps list of maps where the items are stored
+     * @param dataSourceProviders the provider of the source data
      */
-    public SingleFieldMatcher(List<Map<String, Map<String, Object>>> listOfMaps) {
+    public SingleFieldMatcher(List<Map<String, Map<String, Object>>> listOfMaps, ArrayList<DataSourceProviderInterface> dataSourceProviders) {
 
         this.allData = listOfMaps;
-
+        this.dataSourceProviders = dataSourceProviders;
     }
 
     /*
@@ -71,7 +75,7 @@ public class SingleFieldMatcher implements MatcherInterface {
             Map<String, Map<String, Object>> matchedMap = this.getMatchedData(sourceData, index);
             allMatchedData.add(matchedMap);
 
-            System.out.println("matched elements:" + matchedMap.size());
+            HelpdeskLogCollector.logInfo("Matched "+this.dataSourceProviders.get(index).getName()+" items: "+matchedMap.size());
             if (PropertyConfiguration.isTestingEnabled()) {
             ConverterUtil.organisationModelToCSV(matchedMap,
                     "/outputs/data_" + index + "_organisation_matched.csv");
@@ -123,7 +127,6 @@ public class SingleFieldMatcher implements MatcherInterface {
 
                         if (field.equals(field2)) {
 
-                            // System.out.println("it's a match with field: " + field);
                             // only add object from first
                             matchedData.put(field.toString(), sourceDataEntry.getValue());
                         }

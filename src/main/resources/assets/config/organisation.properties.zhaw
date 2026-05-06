@@ -4,6 +4,8 @@ organisation.repositoryAPIUrl = https://digitalcollection-dev.zhaw.ch/server/api
 organisation.specialCharacters = :
 organisation.collectionId = 4c490ddf-fb30-4e26-8e9a-8744cb6dcfab
 organisation.affiliations.exceptions = Zurich University of Applied Sciences in Business Administration
+organisation.mail.admin = apps.hsb@zhaw.ch
+organisation.mail.helpdesk = digitalcollection@zhaw.ch
 
 
 #####################openalex
@@ -53,4 +55,4 @@ match.string = dc.identifier.doi
 externalfile.path = /var/lib/tomcat-current/webapps/hsb-dspace/aurora
 
 ### DSpace Version to set how the csrf token is received
-dspace.version = 8.1.0
+dspace.version = 8.2.0

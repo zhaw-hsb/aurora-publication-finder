@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.StringUtil;
 
 /**
@@ -32,10 +33,9 @@ public class HttpService {
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            return StringUtil.getStringBuilder(conn.getInputStream(), url);
+            return StringUtil.getStringBuilder(conn.getInputStream());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            // e.printStackTrace();
+            AdminLogCollector.logWarning("Could not get string builder from "+url, e);
         }
         return null;
 

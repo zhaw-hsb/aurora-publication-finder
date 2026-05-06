@@ -17,6 +17,8 @@ import java.util.Map.Entry;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyConfiguration;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.HelpdeskLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Mapping.Intern2OrganisationMapping;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Model.InternModel;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.ConverterUtil;
@@ -91,6 +93,8 @@ public class BaseOrganisationTransformer {
                     "/outputs/data_" + this.providerName + "_organisation.csv");
         }
 
+        HelpdeskLogCollector.logInfo("Transformed "+this.providerName+" items: "+transformedData.size());
+
         return transformedData;
 
     }
@@ -134,8 +138,7 @@ public class BaseOrganisationTransformer {
 
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    AdminLogCollector.logWarning("Could not transform item.", e);
                 }
 
             }

@@ -4,6 +4,8 @@ organisation.repositoryAPIUrl = https://irf.test.fhnw.ch/server/api
 organisation.specialCharacters = .|:|;|?|!
 organisation.collectionId = 7de9e71c-3671-4c6c-8b26-13a3cba4f56d
 #organisation.affiliations.exceptions =
+#organisation.mail.admin = 
+#organisation.mail.helpdesk = 
 
 #####################openalex
 openalex.id = id

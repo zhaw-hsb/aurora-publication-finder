@@ -34,8 +34,6 @@ public class OpenAlexDataSourceProvider extends BaseDataSourceProviderAbstract {
     @Override
     public DataSourceProviderInterface transform() {
 
-        System.out.println("OpenAlex transform: ");
-
         OpenAlexDataSourceTransformer transformer = new OpenAlexDataSourceTransformer(this.getBuiltData(),
                  this.getMapping(), this.getIdName(), this.getName());
                  

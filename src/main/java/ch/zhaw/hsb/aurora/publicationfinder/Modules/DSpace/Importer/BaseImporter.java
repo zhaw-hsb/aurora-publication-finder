@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyProviderConfiguration;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.HelpdeskLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Mapping.Intern2OrganisationMapping;
 import ch.zhaw.hsb.aurora.publicationfinder.Modules.DSpace.Service.HTTPService;
 import ch.zhaw.hsb.aurora.publicationfinder.Organisation.Item.WorkflowItem;
@@ -85,12 +87,14 @@ public abstract class BaseImporter {
      */
     public void importData() {
 
-        if (this.data.size() < 1) {
-            System.out.println("No data to be imported.");
+        if (this.data.size() < 1) {                
+            HelpdeskLogCollector.logInfo("There is no data to import.");
             return;
         }
 
 
+        int countSucces = 0;
+        int countFailure = 0;
         for (Entry<String, Map<String, Object>> item : this.data.entrySet()) {
 
             String doi = item.getKey();
@@ -106,7 +110,7 @@ public abstract class BaseImporter {
                 // add values
                 if (this.addValuesToWorkspaceItem(itemId, formedValues)) {
                     if (this.addWorkspaceItemToWorkflow(itemId) != null) {
-                        System.out.println("Successfully imported item");
+                        countSucces++;
                         hasFailed = false;
                     }
 
@@ -114,10 +118,15 @@ public abstract class BaseImporter {
             }
 
             if(hasFailed){
-                System.out.println("Import failed for item with DOI"+doi+".");
+                countFailure++;
+                HelpdeskLogCollector.logInfo("Import failed for item with DOI "+doi+".");
             }
 
         }
+
+        HelpdeskLogCollector.logInfo("Successfully imported "+countSucces+" items.");
+        HelpdeskLogCollector.logInfo("Failed to import "+countFailure+" items.");
+
 
     }
 
@@ -144,8 +153,7 @@ public abstract class BaseImporter {
 
                 return id;
             } catch (JsonProcessingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                AdminLogCollector.logWarning("Failed to get id of workspaceitem.", e);
             }
            
 
@@ -211,18 +219,14 @@ public abstract class BaseImporter {
                     missingPaths = (ArrayNode) jobject.get("errors").get(0).get("paths");
                 }
     
-             
-    
-                System.out.println(missingPaths);
-    
+                 
                 if (missingPaths.size() > 0) {
                     addValuesToWorkspaceItem(itemId, this.addMissingValues(missingPaths));
                 }
     
                 return true;
             } catch (JsonProcessingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                AdminLogCollector.logWarning("Failed to get missing paths and add values.", e);
             }
          
         }
@@ -241,7 +245,7 @@ public abstract class BaseImporter {
         HttpResponse<String> response = HTTPService.sendRequestWithAuthentication(
                 "/api/submission/workspaceitems/" + itemId,
                 "text/uri-list",
-                this.repositoryAPIUrl + "/workflow/workflowitems" + (PropertyProviderConfiguration.getDSpaceVersionShort().equals("7")?"":"?embed=item,sections,collection"
+                this.repositoryAPIUrl + "/workflow/workflowitems" + (PropertyProviderConfiguration.getDSpaceVersionShort() == 7?"":"?embed=item,sections,collection"
                 ),
                 "POST");
 
@@ -258,8 +262,8 @@ public abstract class BaseImporter {
     
                 return new WorkflowItem(id, uuid);
             } catch (JsonProcessingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                AdminLogCollector.logWarning("Failed to get id and uuid of workflowitem.", e);
+
             }
 
         }
@@ -306,13 +310,13 @@ public abstract class BaseImporter {
                 try {
                     claimedID = objectMapper.readTree(responseBodyClaimedTask).get("id").asInt();
                 } catch (JsonProcessingException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    AdminLogCollector.logWarning("Failed to get id of claimed item.", e);
+
                 }
             }
             } catch (JsonProcessingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                AdminLogCollector.logWarning("Failed to get id of pooltask item.", e);
+
             }
 
 
@@ -351,7 +355,7 @@ public abstract class BaseImporter {
                 String responseBodyDeleteFromClaimedTask = response3.body();
 
                 if (responseBodyDeleteFromClaimedTask == null) {
-
+                    AdminLogCollector.logWarning("Failed to move claimed item " + workflowItem.getUuid() + "back to pool", null);
                     return false;
 
                 }

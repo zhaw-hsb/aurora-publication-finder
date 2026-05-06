@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Main;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.JSONUtil;
 
 /**
@@ -42,7 +43,6 @@ public class Provider2InternMapping implements MappingInterface {
         this.provider = provider;
         
         try {
-            System.out.println("assets/config/" + this.provider + ".json");
             InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("assets/config/" + this.provider + ".json");
 
             if (inputStream == null) {
@@ -53,8 +53,8 @@ public class Provider2InternMapping implements MappingInterface {
             this.sourceJSON = objectMapper.readTree(new String(inputStream.readAllBytes()));
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Could not read " + "assets/config/" + this.provider + ".json", e);
+
         }
 
     }

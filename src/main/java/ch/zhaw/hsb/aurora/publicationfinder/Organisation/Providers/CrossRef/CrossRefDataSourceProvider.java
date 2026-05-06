@@ -35,8 +35,6 @@ public class CrossRefDataSourceProvider extends BaseDataSourceProviderAbstract {
     @Override
     public DataSourceProviderInterface transform() {
 
-        System.out.println("CrossRef transform: ");
-
         CrossRefDataSourceTransformer transformer = new CrossRefDataSourceTransformer(this.getBuiltData(),
                 this.getMapping(), this.getIdName(), this.getName());
 

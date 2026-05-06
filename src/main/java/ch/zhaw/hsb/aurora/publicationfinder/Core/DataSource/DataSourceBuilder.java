@@ -46,7 +46,6 @@ public class DataSourceBuilder {
 
         this.providerName = providerName;
         this.arrayNode = arrayNode;
-        System.out.println("DataSourceBuilder: ");
         Map<String, String[]> fieldDict = mapping.getMapRecord();
         this.fieldNames = new ArrayList<>();
 
@@ -60,7 +59,6 @@ public class DataSourceBuilder {
 
         }
         this.idField = idField;
-        System.out.println("FieldsName: " + this.fieldNames);
 
     }
 
@@ -96,7 +94,6 @@ public class DataSourceBuilder {
 
         }
 
-        System.out.println("Built data: " + all.size());
         return all;
     }
 

@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyConfiguration;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.HelpdeskLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.ConverterUtil;
 
 /**
@@ -49,7 +50,7 @@ public class Fusion {
             }
 
         }
-        System.out.println("Alldata size: " + allData.size());
+
         if (PropertyConfiguration.isTestingEnabled()) {
             ConverterUtil.organisationModelToCSV(allData, "/outputs/data_organisation_final_data.csv");
         }

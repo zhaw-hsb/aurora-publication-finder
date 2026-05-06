@@ -9,10 +9,12 @@
 package ch.zhaw.hsb.aurora.publicationfinder.Core.DataSource;
 
 import java.util.Map;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyProviderConfiguration;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.UserInputConfiguration;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Mapping.Intern2OrganisationMapping;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Mapping.Provider2InternMapping;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Model.InternModel;
@@ -58,8 +60,6 @@ public abstract class BaseDataSourceProviderAbstract implements DataSourceProvid
 
     @Override
     public String getName() {
-        System.out.println("Provider name: " + this.providerName);
-
         return this.providerName;
     }
     
@@ -166,7 +166,6 @@ public abstract class BaseDataSourceProviderAbstract implements DataSourceProvid
      
     @Override
     public Map<String,InternModel> getTransformedData() {
-        System.out.println("Size of transformed data: " + this.transformedData.size());
         return this.transformedData;
     }
     
@@ -177,7 +176,6 @@ public abstract class BaseDataSourceProviderAbstract implements DataSourceProvid
 
     @Override
     public Map<String, Map<String, Object>> getOrganisationData() {
-        System.out.println("Size of organisation data: " + this.organisationData.size());
         return this.organisationData;
     }
 
@@ -205,7 +203,8 @@ public abstract class BaseDataSourceProviderAbstract implements DataSourceProvid
         this.connectionElement = PropertyProviderConfiguration.getFieldByName(providerName,"connectionElement");
         this.metadata = PropertyProviderConfiguration.getFieldByName(providerName,"metadata");
         this.itemsSection = PropertyProviderConfiguration.getFieldByName(providerName,"itemsSection");
-        this.timestamp = PropertyProviderConfiguration.getFieldByName(providerName, "timestamp");
+        this.timestamp = Optional.ofNullable(UserInputConfiguration.getDate())
+                          .orElseGet(() -> PropertyProviderConfiguration.getFieldByName(providerName, "timestamp"));
         return this;
     }
 
@@ -213,9 +212,7 @@ public abstract class BaseDataSourceProviderAbstract implements DataSourceProvid
     public DataSourceProviderInterface retrieve() {
         
         DataSourceRetriever retriever = new DataSourceRetriever(this);
-
         this.retrievedData = retriever.getDataFromAllTypes();
-        //System.out.println(this.retrievedData);
         return this;
 
     }
@@ -223,34 +220,22 @@ public abstract class BaseDataSourceProviderAbstract implements DataSourceProvid
     @Override
     public DataSourceProviderInterface build() {
 
-        System.out.println("build: ");
-
         DataSourceBuilder builder = new DataSourceBuilder(this.providerName, this.retrievedData, this.mapping, this.idName);
-
         this.builtData = builder.getData();
-
         return this;
     }
 
     @Override
     public DataSourceProviderInterface transform() {
-
-        System.out.println("transform: ");
-
         return this;
     }
     
     @Override
     public DataSourceProviderInterface transformForOrganisation() {
 
-        System.out.println("transform for organisation: ");
-        
         Intern2OrganisationMapping mapping = new Intern2OrganisationMapping();
-
-        //OrganisationJsonMapping mapping = new OrganisationJsonMapping();
         OrganisationFieldsTransformer organisationTransformer = new OrganisationFieldsTransformer(this.getTransformedData(),
                 this.getName(), mapping);
-
         this.setOrganisationData(organisationTransformer.getTransformedData());
 
         return this;

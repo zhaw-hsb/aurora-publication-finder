@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Main;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
 
 /**
  * This class retrieves configuration properties from the credentials.properties file. 
@@ -42,16 +43,21 @@ public class PropertyCredentialsConfiguration {
 
         if (prop == null) {
 
+            String path = "assets/config/credentials.properties";
+
             try (InputStream input = Main.class.getClassLoader().getResourceAsStream(
-                    "assets/config/credentials.properties"); InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
+                    path)) {
+
+                if (input == null){
+                    AdminLogCollector.logErrorAndExit(path+" doesn't exist.", null);
+                }
+                
                 Properties property = new Properties();
-                property.load(reader);
+                property.load(new InputStreamReader(input, StandardCharsets.UTF_8));
                 prop = property;
 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                throw new Exception("assets/config/credentials.properties could not be read.");
+                AdminLogCollector.logErrorAndExit(path+" could not be read.", e);
             }
 
         }
@@ -68,8 +74,7 @@ public class PropertyCredentialsConfiguration {
         try {
             return getInstance().getProperty("username");
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logErrorAndExit("Error retrieving username.", e);
         }
         return null;
 
@@ -84,8 +89,38 @@ public class PropertyCredentialsConfiguration {
         try {
             return getInstance().getProperty("password");
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logErrorAndExit("Error retrieving password.", e);
+        }
+
+        return null;
+
+    }
+
+    /**
+     * Method to get mail address
+     * @return String
+     */
+    public static String getMail() {
+
+        try {
+            return getInstance().getProperty("mail");
+        } catch (Exception e) {
+            AdminLogCollector.logErrorAndExit("Error retrieving mail.", e);
+        }
+        return null;
+
+    }
+
+    /**
+     * Method to get mail password
+     * @return String
+     */
+    public static String getMailPassword() {
+
+        try {
+            return getInstance().getProperty("mail.password");
+        } catch (Exception e) {
+            AdminLogCollector.logErrorAndExit("Error retrieving mail password.", e);
         }
 
         return null;

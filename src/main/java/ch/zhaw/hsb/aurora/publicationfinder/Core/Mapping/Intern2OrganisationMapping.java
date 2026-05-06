@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Main;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.ConverterUtil;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.JSONUtil;
 
@@ -201,8 +202,7 @@ public class Intern2OrganisationMapping implements MappingInterface {
 
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Could not read "+"assets/config/" + this.provider + ".json", e);
         }
         return null;
 
@@ -210,8 +210,8 @@ public class Intern2OrganisationMapping implements MappingInterface {
 
     @Override
     public Map<String, String[]> getMapRecord() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMapRecord'");
+        AdminLogCollector.logErrorAndExit("Unimplemented method 'getMapRecord'", null);
+        return null;
     }
 
 }

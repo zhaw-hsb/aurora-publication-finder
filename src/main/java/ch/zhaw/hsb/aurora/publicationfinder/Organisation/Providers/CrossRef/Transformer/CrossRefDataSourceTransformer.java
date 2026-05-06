@@ -88,12 +88,11 @@ public class CrossRefDataSourceTransformer extends DataSourceTransformerAbstract
             internModel.setDateIssued(
                     new String[] { (String) this.getDateIssued(element, this.fieldDict.get("dateIssued")) });
         } catch (Exception e) {
-            System.out.println(e);
             internModel.setDateIssued(null);
         }
 
         try {
-            internModel.setDOI(new String[] { (String) this.getDOI(element, this.fieldDict.get("DOI")) });
+            internModel.setDOI(new String[] { ((String) this.getDOI(element, this.fieldDict.get("DOI"))).split("\\?")[0] });
         } catch (Exception e) {
             internModel.setDOI(null);
         }

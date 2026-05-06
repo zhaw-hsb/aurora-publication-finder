@@ -13,6 +13,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
+
 /**
  * This class offers utilities for files.
  * 
@@ -31,8 +33,7 @@ public class FileUtil {
         try {
             return new String(Files.readAllBytes(Paths.get(path)));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Could not read from "+path, e);
             return null;
         }
     }
@@ -48,8 +49,7 @@ public class FileUtil {
             Files.write(path, text.getBytes());
             return true;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Could not write to "+path, e);
             return false;
         }
     }

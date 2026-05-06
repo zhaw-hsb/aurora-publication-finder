@@ -280,7 +280,7 @@
                 ],
                 "multiple_values": true,
                 "merge_criteria": "openalex",
-                "section": "zhawdescribtioncontent"
+                "section": "zhawdescriptioncontent"
             },
             {
                 "field_name": "dcterms.type",

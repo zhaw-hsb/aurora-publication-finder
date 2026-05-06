@@ -27,6 +27,8 @@ import java.util.Map.Entry;
 import ch.zhaw.hsb.aurora.publicationfinder.Main;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyConfiguration;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.DataSource.DataSourceProviderInterface;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.HelpdeskLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.ConverterUtil;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.JSONUtil;
 
@@ -141,7 +143,8 @@ public class FieldMerger implements MergerInterface {
 
 
         
-        System.out.println("All merged data size: "+allMergedData.size());
+        HelpdeskLogCollector.logInfo("Merged items: "+allMergedData.size());
+
         if (PropertyConfiguration.isTestingEnabled()) {
             ConverterUtil.organisationModelToCSV(allMergedData, "/outputs/data_organisation_merged.csv");
         }
@@ -230,7 +233,7 @@ public class FieldMerger implements MergerInterface {
 
             InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("assets/config/organisation.json");
             if (inputStream == null) {
-                throw new FileNotFoundException("Config file not found: organisation.json");
+                AdminLogCollector.logErrorAndExit("Config file not found: organisation.json", null);
             }
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode sourceJSON = objectMapper.readTree(inputStream);
@@ -251,8 +254,7 @@ public class FieldMerger implements MergerInterface {
             }
             return mergeCriteriaMap;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AdminLogCollector.logWarning("Failure getting the merge criterias.", e);
             return null;
 
         }
