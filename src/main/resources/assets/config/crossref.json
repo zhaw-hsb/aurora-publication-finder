@@ -253,6 +253,14 @@
                 ],
                 "multiple_fields": false,
                 "multiple_values": true
+            },
+            {
+                "field_name": "updateTo",
+                "fields": [
+                    "update-to"
+                ],
+                "multiple_fields": false,
+                "multiple_values": false
             }
 
         ]

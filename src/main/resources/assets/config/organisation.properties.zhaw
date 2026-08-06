@@ -48,7 +48,7 @@ crossref.itemsSection = message:items
 
 
 ###########matcher
-match.string = dc.identifier.doi
+match.string = zhaw.identifier.publisherdoi
 
 
 ### Path for output files (outside JAR)

@@ -33,16 +33,6 @@ public class EmailReportService {
      */
     public void sendReports(boolean errorOccured) {
         try {
-            // Admin email
-            if (!AdminLogCollector.getErrors().isEmpty()) {
-                String adminContent = String.join("\n---\n", AdminLogCollector.getErrors());
-                emailService.sendEmail(
-                    PropertyProviderConfiguration.getMailAdmin(),
-                    "[AURORA publicationfinder: SYSTEM ERROR REPORT]",
-                    adminContent
-                );
-                AdminLogCollector.clear();
-            }
 
             // helpdesk email
             String helpdeskContent = "";
@@ -51,7 +41,21 @@ public class EmailReportService {
             }
 
             if(errorOccured){
-                    helpdeskContent = helpdeskContent.concat("\n---\nAn error occured. The administrator has been notified.");
+                
+                // Admin email only if error occured
+                if (!AdminLogCollector.getErrors().isEmpty()) {
+                    String adminContent = String.join("\n---\n", AdminLogCollector.getErrors());
+                    emailService.sendEmail(
+                        PropertyProviderConfiguration.getMailAdmin(),
+                        "[AURORA publicationfinder: SYSTEM ERROR REPORT]",
+                        adminContent
+                    );
+                    AdminLogCollector.clear();
+                }
+
+                helpdeskContent = helpdeskContent.concat("\n---\nAn error occured. The administrator has been notified.");
+
+                    
             }
 
             emailService.sendEmail(PropertyProviderConfiguration.getMailHelpdesk(),"AURORA publicationfinder: System Summary", helpdeskContent);

@@ -365,4 +365,15 @@ public abstract class DataSourceTransformerAbstract {
 
     }
 
+    /**
+     * Method to get the updateTo of the element
+     * @param element one element of the data: "ID1": {"field1": "value1", "field2": "value2", etc.}
+     * @param fieldNames field names where updateTo is stored
+     * @return Object
+     */
+    protected Object getUpdateTo(Map<String, Object> element, String[] fieldNames) {
+        return element.get(fieldNames[0]);
+
+    }
+
 }

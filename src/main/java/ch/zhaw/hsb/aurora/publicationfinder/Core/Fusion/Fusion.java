@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Configuration.PropertyConfiguration;
-import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.HelpdeskLogCollector;
+import ch.zhaw.hsb.aurora.publicationfinder.Core.Mapping.Intern2OrganisationMapping;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.ConverterUtil;
 
 /**
@@ -38,8 +38,12 @@ public class Fusion {
         for (Map<String, Map<String, Object>> mapOfProvider : listOfMaps) {
             for (Entry<String, Map<String, Object>> entry : mapOfProvider.entrySet()) {
 
-                if (entry.getValue().get("dc.identifier.doi") != null) {
-                    if (allData.keySet().contains(((String[]) entry.getValue().get("dc.identifier.doi"))[0])) {
+                Intern2OrganisationMapping intern2OrganisationMapping = new Intern2OrganisationMapping();
+                Map<String, String> fieldDict = (Map<String, String>) intern2OrganisationMapping.getByFieldName("map:record:fields:inverted");;
+                String doiField = fieldDict.get("DOI");
+
+                if (entry.getValue().get(doiField) != null) {
+                    if (allData.keySet().contains(((String[]) entry.getValue().get(doiField))[0])) {
                         // do not add if doi contained in mergedData
                         continue;
                     }

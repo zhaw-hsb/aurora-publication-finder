@@ -6,13 +6,11 @@
         "doctoral thesis": "Dissertation",
         "report": "Working Paper \u2013 Gutachten \u2013 Studie",
         "text":"Konferenz: Paper",
-        "other":"Weiteres (textuelles Material)",
         "editorial": "Beitrag in wissenschaftlicher Zeitschrift",
         "letter to the editor":"Beitrag in wissenschaftlicher Zeitschrift",
         "conference paper": "Konferenz: Paper",
         "conference proceedings": "Konferenz: Proceedings",
-        "preprint":"Working Paper \u2013 Gutachten \u2013 Studie",
-        "Default": "Weiteres (textuelles Material)"
+        "Default": ""
     },
     "licenses": {
         "https://creativecommons.org/licenses/by/4.0/":"https://creativecommons.org/licenses/by/4.0/",
@@ -111,7 +109,7 @@
                 "section": "zhawdescriptionclassic"
             },
             {
-                "field_name": "dc.identifier.doi",
+                "field_name": "zhaw.identifier.publisherdoi",
                 "fields": [
                     "DOI"
                 ],

@@ -1,6 +1,7 @@
 {
     "types":{
       "article": "journal article",
+      "review": "journal article",
       "book-chapter": "book part", 
       "book": "book", 
       "dissertation": "doctoral thesis", 

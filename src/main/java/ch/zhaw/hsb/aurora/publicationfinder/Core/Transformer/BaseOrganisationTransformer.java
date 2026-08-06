@@ -31,8 +31,8 @@ import ch.zhaw.hsb.aurora.publicationfinder.Core.Util.ConverterUtil;
  */
 public class BaseOrganisationTransformer {
 
-    Map<String, String[]> fieldDict;
-    Map<String, Boolean> multValuesDict;
+    protected Map<String, String[]> fieldDict;
+    protected Map<String, Boolean> multValuesDict;
 
     public JsonNode licenses;
     public JsonNode types;
@@ -85,7 +85,10 @@ public class BaseOrganisationTransformer {
         Map<String, Map<String, Object>> transformedData = new HashMap<String, Map<String, Object>>();
 
         for (Entry<String, InternModel> elementEntry : this.data.entrySet()) {
-            transformedData.put(elementEntry.getValue().getId(), this.getTransformedElement(elementEntry.getValue()));
+            Map<String, Object> transformedElement = this.getTransformedElement(elementEntry.getValue());
+            if(transformedElement != null){
+                transformedData.put(elementEntry.getValue().getId(), transformedElement);
+            }
         }
 
         if (PropertyConfiguration.isTestingEnabled()) {
@@ -389,6 +392,16 @@ public class BaseOrganisationTransformer {
      */
     public String[] getOA(InternModel internModel) {
         return internModel.getOA();
+
+    }
+
+        /**
+     * Method to get the updateTo of the intern model
+     * @param internModel publication as intern model
+     * @return String[]
+     */
+    public boolean getUpdateTo(InternModel internModel) {
+        return internModel.getUpdateTo();
 
     }
 

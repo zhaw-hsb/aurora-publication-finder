@@ -8,15 +8,21 @@
 */
 package ch.zhaw.hsb.aurora.publicationfinder.Organisation;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import ch.zhaw.hsb.aurora.publicationfinder.Core.LogCollector.AdminLogCollector;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Mapping.Intern2OrganisationMapping;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Model.InternModel;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Model.PersonModel;
 import ch.zhaw.hsb.aurora.publicationfinder.Core.Transformer.BaseOrganisationTransformer;
+import ch.zhaw.hsb.aurora.publicationfinder.Organisation.Service.ExclusionService;
 
 /**
  * This class is the extended transformer with organisation specific requirements.
@@ -34,6 +40,67 @@ public class OrganisationFieldsTransformer extends BaseOrganisationTransformer {
      */
     public OrganisationFieldsTransformer(Map<String, InternModel> map, String provider, Intern2OrganisationMapping mapping) {
         super(map, provider, mapping);
+    }
+
+
+    @Override
+    public Map<String, Object> getTransformedElement(InternModel internModel) {
+
+        ExclusionService exclusionService = new ExclusionService(); 
+
+        if(exclusionService.publicationStatusExclusionCriteria(providerName, internModel.getPublicationStatus()) |
+            exclusionService.updateToExclusionCriteria(internModel.getUpdateTo())){
+                
+                return null;
+        }
+
+        Map<String, Object> organisationMap = new HashMap<>();
+
+        for (Entry<String, String[]> entry : fieldDict.entrySet()) {
+
+            String organisationKey = entry.getKey();
+            String[] internalKeys = entry.getValue();
+
+            // always take first get even if there are multiple_fields in config -->
+            // Reihenfolge in Config wichtig
+            if (internalKeys.length > 0) {
+                String methodName = "get" + internalKeys[0].substring(0, 1).toUpperCase()
+                        + internalKeys[0].substring(1);
+                Method method;
+                try {
+                    try {
+                        method = this.getClass().getDeclaredMethod(methodName, InternModel.class);
+
+                    } catch (NoSuchMethodException ex) {
+                        method = this.getClass().getSuperclass().getDeclaredMethod(methodName, InternModel.class);
+                    }
+                    Object returnedValue = method.invoke(this, internModel);
+
+                    if(internalKeys[0].equals("type") && exclusionService.typeExclusionCriteria((String[]) returnedValue)){
+                        return null;
+                    }
+
+
+                    if (!this.multValuesDict.get(organisationKey) && returnedValue instanceof String[]) {
+                        if (returnedValue != null) {
+                            organisationMap.put(organisationKey, returnedValue);
+                            continue;
+
+                        }
+                    }
+                    organisationMap.put(organisationKey, returnedValue);
+
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException e) {
+                    AdminLogCollector.logWarning("Could not transform item.", e);
+                }
+
+            }
+
+        }
+
+        return organisationMap;
+
     }
 
 

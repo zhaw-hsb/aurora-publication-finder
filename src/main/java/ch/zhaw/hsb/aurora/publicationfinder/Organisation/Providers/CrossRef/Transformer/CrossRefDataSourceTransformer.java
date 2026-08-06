@@ -187,6 +187,13 @@ public class CrossRefDataSourceTransformer extends DataSourceTransformerAbstract
             internModel.setAbstractText(null);
         }
 
+        try {
+            internModel.setUpdateTo(
+                    ((boolean) this.getUpdateTo(element, this.fieldDict.get("updateTo"))) );
+        } catch (Exception e) {
+            internModel.setUpdateTo(false);
+        }
+
         return internModel;
 
     }
@@ -434,6 +441,16 @@ public class CrossRefDataSourceTransformer extends DataSourceTransformerAbstract
 
         }
         return null;
+    }
+
+    @Override
+    protected Object getUpdateTo(Map<String, Object> element, String[] fieldNames) {
+        Object updateTo = super.getUpdateTo(element, fieldNames);
+        if (updateTo != null && updateTo instanceof ArrayNode) {
+            return true;
+
+        }
+        return false;
     }
 
 

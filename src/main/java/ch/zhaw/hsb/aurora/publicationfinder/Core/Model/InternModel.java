@@ -45,7 +45,7 @@ public class InternModel implements ModelInterface{
     private String[] event;
     private String[] abstractText;
     private String[] OA;
-
+    private boolean updateTo;
 
     /**
      * Method to get the name of the provider
@@ -449,6 +449,22 @@ public class InternModel implements ModelInterface{
      */
     public void setOA(String[] OA) {
         this.OA = StringUtil.trimStringsInStringArray(OA);
+    }
+
+    /**
+     * Method to get the updateTo of the intern model
+     * @return String[]
+     */
+    public boolean getUpdateTo() {
+        return updateTo;
+    }
+
+    /**
+     * Method to set the updateTo of the intern model
+     * @param updateTo updateTo of a publication
+     */
+    public void setUpdateTo(boolean updateTo) {
+        this.updateTo = updateTo;
     }
 
 }

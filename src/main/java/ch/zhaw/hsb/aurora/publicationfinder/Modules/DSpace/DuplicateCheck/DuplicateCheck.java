@@ -270,7 +270,7 @@ public abstract class DuplicateCheck {
 
             duplicateItem.put("config", config);
 
-            String doiUrl = this.repositoryAPIUrl + "/discover/search/objects?query=dc.identifier.doi:"
+            String doiUrl = this.repositoryAPIUrl + "/discover/search/objects?query="+this.doiFieldName+":"
                     + URLEncoder.encode(duplicateItem.get("doi").toString(), StandardCharsets.UTF_8)
                     + config;
             duplicateItem.put("doiURL", doiUrl);
@@ -331,6 +331,10 @@ public abstract class DuplicateCheck {
                         }
 
                     }
+                }else{
+                    //data is null if repository couldn't treat request
+                    //mark as duplicate
+                    isDuplicate = true;
                 }
 
                 if (PropertyConfiguration.isTestingEnabled()) {
