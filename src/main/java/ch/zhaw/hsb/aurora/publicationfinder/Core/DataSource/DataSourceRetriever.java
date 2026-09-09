@@ -129,7 +129,7 @@ public class DataSourceRetriever {
         for (int index = 0; index < searchList.length; index++) {
             nextCursor = dataSourceProvider.getStartCursor();
 
-            while (nextCursor != "null") {
+            while (nextCursor != null) {
 
                 try {
                     url = this.getURL(type, nextCursor, index);

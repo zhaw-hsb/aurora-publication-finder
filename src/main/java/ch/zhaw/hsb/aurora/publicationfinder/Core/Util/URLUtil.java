@@ -29,10 +29,19 @@ public class URLUtil {
      */
     public static String getNextCursor(JsonNode jObject, String metadataField, String nextCursor) {
 
-        // JSON Object with meta data
         JsonNode metadata = jObject.get(metadataField);
-        // cursor to get to next page
-        return metadata.get(nextCursor).asText();
+       
+        if(metadata == null){
+            return null;
+        }
+
+        JsonNode nextCursorNode = metadata.get(nextCursor);
+
+        if(nextCursorNode == null || nextCursorNode.isNull()){
+                return null;
+        }
+        
+        return nextCursorNode.asText();
 
     }
 
